@@ -1,65 +1,359 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shop | DEAD STOCK</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-<title>Shop | DEAD STOCK</title>
+    body {
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 40%, #0a1a2e 70%, #0a0a1a 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
 
-<!-- IMPORTANT: CSS LINK -->
-<link rel="stylesheet" href="style.css">
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .b1 { width: 500px; height: 500px; background: #7f77dd; top: -150px; left: -150px; }
+    .b2 { width: 400px; height: 400px; background: #d4537e; top: 200px; right: -100px; }
+    .b3 { width: 350px; height: 350px; background: #1d9e75; bottom: 0; left: 30%; }
 
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 4px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.45);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 2px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+    .page-wrap { position: relative; z-index: 1; padding: 2rem; }
+
+    .shop-header { margin-bottom: 1.5rem; }
+    .shop-header p { font-size: 10px; letter-spacing: 4px; color: rgba(255,255,255,0.35); margin-bottom: 6px; }
+    .shop-header h1 { font-size: 28px; font-weight: 500; letter-spacing: 1px; }
+
+    .filters {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+
+    .filter-btn {
+      padding: 6px 18px;
+      border: 0.5px solid rgba(255, 255, 255, 0.2);
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      color: rgba(255, 255, 255, 0.5);
+      font-size: 10px;
+      letter-spacing: 2px;
+      cursor: pointer;
+      border-radius: 20px;
+      transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.15);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 20px;
+    }
+
+    .product-card {
+      background: rgba(255, 255, 255, 0.07);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 0.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+    .product-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+
+    .product-img {
+      width: 100%;
+      aspect-ratio: 3 / 4;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(255, 255, 255, 0.03);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .product-img .icon-placeholder {
+      font-size: 64px;
+      opacity: 0.7;
+    }
+
+    .badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      font-size: 9px;
+      letter-spacing: 2px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-weight: 500;
+    }
+    .badge.new { background: rgba(127,119,221,0.35); color: #ccc9f7; border: 0.5px solid rgba(127,119,221,0.5); }
+    .badge.sold { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); border: 0.5px solid rgba(255,255,255,0.15); }
+    .badge.drop { background: rgba(212,83,126,0.35); color: #f4c0d1; border: 0.5px solid rgba(212,83,126,0.5); }
+
+    .product-info { padding: 14px 16px 16px; }
+
+    .product-category {
+      font-size: 9px;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.35);
+      margin-bottom: 4px;
+    }
+
+    .product-name {
+      font-size: 14px;
+      color: #fff;
+      font-weight: 400;
+      margin-bottom: 14px;
+      line-height: 1.4;
+    }
+
+    .product-bottom {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .product-price { font-size: 15px; font-weight: 500; color: #fff; }
+    .product-price.strikethrough { color: rgba(255,255,255,0.25); text-decoration: line-through; font-size: 13px; }
+
+    .add-btn {
+      background: rgba(255, 255, 255, 0.08);
+      border: 0.5px solid rgba(255, 255, 255, 0.2);
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 9px;
+      letter-spacing: 1px;
+      padding: 7px 12px;
+      cursor: pointer;
+      border-radius: 10px;
+      backdrop-filter: blur(10px);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .add-btn:hover { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.4); }
+    .add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      border-top: 0.5px solid rgba(255, 255, 255, 0.08);
+      margin-top: 3rem;
+      position: relative;
+      z-index: 1;
+    }
+    footer p { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 2px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem; }
+      .nav-links { gap: 14px; }
+      .page-wrap { padding: 1.5rem 1rem; }
+      .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    }
+  </style>
 </head>
-
 <body>
 
-<!-- NAVBAR -->
-<nav class="navbar">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
 
-<div class="logo">DEAD STOCK</div>
+  <nav>
+    <a href="index.html" class="nav-logo">DEAD STOCK</a>
+    <div class="nav-links">
+      <a href="index.html">HOME</a>
+      <a href="shop.html" class="active">SHOP</a>
+      <a href="about.html">ABOUT</a>
+      <a href="contact.html">CONTACT</a>
+    </div>
+  </nav>
 
-<ul class="nav-links">
-<li><a href="index.html">HOME</a></li>
-<li><a href="shop.html">SHOP</a></li>
-<li><a href="about.html">ABOUT</a></li>
-<li><a href="contact.html">CONTACT</a></li>
-</ul>
-
-</nav>
-
-<!-- SHOP SECTION -->
-<section style="padding-top:140px;padding-bottom:80px;">
-
-<h1 style="text-align:center;font-size:4rem;">
-SHOP
-</h1>
-
-<!-- PRODUCTS GRID -->
-<section class="products">
-
-    <div class="product-card">
-        <img src="assets/products/jacket.jpg" alt="Vintage Jacket">
-        <h3>Vintage Denim Jacket</h3>
-        <p>₹999</p>
+  <div class="page-wrap">
+    <div class="shop-header">
+      <p>THE VAULT</p>
+      <h1>All Drops</h1>
     </div>
 
-    <div class="product-card">
-        <img src="assets/products/watch.jpg" alt="Retro Watch">
-        <h3>Retro Watch</h3>
-        <p>₹799</p>
+    <div class="filters">
+      <button class="filter-btn active" data-filter="all">ALL</button>
+      <button class="filter-btn" data-filter="clothing">CLOTHING</button>
+      <button class="filter-btn" data-filter="watches">WATCHES</button>
+      <button class="filter-btn" data-filter="rings">RINGS</button>
+      <button class="filter-btn" data-filter="belts">BELTS</button>
     </div>
 
-    <div class="product-card">
-        <img src="assets/products/streetwear.jpg" alt="Streetwear Hoodie">
-        <h3>Streetwear Hoodie</h3>
-        <p>₹1499</p>
+    <div class="product-grid" id="productGrid">
+
+      <div class="product-card" data-category="clothing">
+        <div class="product-img">
+          <span class="badge new">NEW</span>
+          <img src="assets/products/jacket.jpg" alt="Vintage Denim Jacket" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="icon-placeholder" style="display:none">🧥</span>
+        </div>
+        <div class="product-info">
+          <p class="product-category">CLOTHING</p>
+          <p class="product-name">Vintage Denim Jacket</p>
+          <div class="product-bottom">
+            <span class="product-price">₹999</span>
+            <button class="add-btn">ADD TO CART</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="watches">
+        <div class="product-img">
+          <img src="assets/products/watch.jpg" alt="Retro Watch" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="icon-placeholder" style="display:none">⌚</span>
+        </div>
+        <div class="product-info">
+          <p class="product-category">WATCHES</p>
+          <p class="product-name">Retro Watch</p>
+          <div class="product-bottom">
+            <span class="product-price">₹799</span>
+            <button class="add-btn">ADD TO CART</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="clothing">
+        <div class="product-img">
+          <span class="badge new">NEW</span>
+          <img src="assets/products/streetwear.jpg" alt="Streetwear Hoodie" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+          <span class="icon-placeholder" style="display:none">👕</span>
+        </div>
+        <div class="product-info">
+          <p class="product-category">CLOTHING</p>
+          <p class="product-name">Streetwear Hoodie</p>
+          <div class="product-bottom">
+            <span class="product-price">₹1,499</span>
+            <button class="add-btn">ADD TO CART</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="rings">
+        <div class="product-img">
+          <span class="badge sold">SOLD</span>
+          <span class="icon-placeholder">💍</span>
+        </div>
+        <div class="product-info">
+          <p class="product-category">RINGS</p>
+          <p class="product-name">Silver Band Ring</p>
+          <div class="product-bottom">
+            <span class="product-price strikethrough">₹499</span>
+            <button class="add-btn" disabled>SOLD OUT</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="belts">
+        <div class="product-img">
+          <span class="icon-placeholder">🥋</span>
+        </div>
+        <div class="product-info">
+          <p class="product-category">BELTS</p>
+          <p class="product-name">Leather Tactical Belt</p>
+          <div class="product-bottom">
+            <span class="product-price">₹649</span>
+            <button class="add-btn">ADD TO CART</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="clothing">
+        <div class="product-img">
+          <span class="badge drop">DROP 001</span>
+          <span class="icon-placeholder">🧣</span>
+        </div>
+        <div class="product-info">
+          <p class="product-category">ACCESSORIES</p>
+          <p class="product-name">Vintage Scarf</p>
+          <div class="product-bottom">
+            <span class="product-price">₹399</span>
+            <button class="add-btn">ADD TO CART</button>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
 
-</section>
+  <footer>
+    <p>© 2026 DEAD STOCK</p>
+    <p>RARE FINDS. SECOND LIVES.</p>
+  </footer>
 
-</section>
-
+  <script>
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        const filter = btn.dataset.filter;
+        document.querySelectorAll('.product-card').forEach(card => {
+          card.style.display = (filter === 'all' || card.dataset.category === filter) ? 'block' : 'none';
+        });
+      });
+    });
+  </script>
 </body>
 </html>
  
