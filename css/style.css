@@ -279,3 +279,75 @@ footer{
 
     border-color:#8b5cf6;
 }
+.drop-section{
+    padding:120px 8%;
+}
+
+.drop-card{
+
+    display:grid;
+    grid-template-columns:1fr 1fr;
+
+    gap:40px;
+
+    padding:50px;
+
+    border-radius:30px;
+
+    background:rgba(255,255,255,.04);
+
+    border:1px solid rgba(255,255,255,.08);
+
+    backdrop-filter:blur(20px);
+}
+
+.drop-number{
+    color:#8b5cf6;
+    letter-spacing:3px;
+    margin-bottom:20px;
+}
+
+.drop-left h2{
+    font-size:4rem;
+    margin-bottom:20px;
+}
+
+.drop-left p{
+    color:#bdbdbd;
+    line-height:1.8;
+    margin-bottom:30px;
+}
+
+.product-preview{
+
+    height:350px;
+
+    border-radius:25px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:2rem;
+    font-weight:800;
+
+    background:
+    linear-gradient(
+        135deg,
+        rgba(139,92,246,.4),
+        rgba(0,0,0,.3)
+    );
+
+    border:1px solid rgba(255,255,255,.08);
+}
+
+@media(max-width:900px){
+
+    .drop-card{
+        grid-template-columns:1fr;
+    }
+
+    .drop-left h2{
+        font-size:2.5rem;
+    }
+}
