@@ -1,155 +1,437 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DEAD STOCK | Rare Finds. Second Lives.</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
 
-<title>DEAD STOCK | Rare Finds. Second Lives.</title>
+    body {
+      background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 40%, #0a1a2e 70%, #0a0a1a 100%);
+      min-height: 100vh;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      overflow-x: hidden;
+    }
 
-<link rel="stylesheet" href="css/style.css">
+    .blob {
+      position: fixed;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.2;
+      pointer-events: none;
+      z-index: 0;
+    }
+    .b1 { width: 600px; height: 600px; background: #7f77dd; top: -200px; left: -200px; }
+    .b2 { width: 450px; height: 450px; background: #d4537e; top: 300px; right: -120px; }
+    .b3 { width: 400px; height: 400px; background: #1d9e75; bottom: 0; left: 35%; }
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2rem;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
 
+    .nav-logo {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 4px;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a {
+      color: rgba(255, 255, 255, 0.45);
+      text-decoration: none;
+      font-size: 11px;
+      letter-spacing: 2px;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+    /* HERO */
+    .hero {
+      position: relative;
+      z-index: 1;
+      min-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: rgba(255, 255, 255, 0.4);
+      margin-bottom: 2rem;
+      padding: 7px 22px;
+      border: 0.5px solid rgba(255, 255, 255, 0.15);
+      border-radius: 30px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+    }
+
+    .hero h1 {
+      font-size: clamp(56px, 12vw, 96px);
+      font-weight: 700;
+      letter-spacing: 8px;
+      line-height: 1;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #ffffff 40%, rgba(200, 180, 255, 0.6) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.4);
+      letter-spacing: 2px;
+      line-height: 1.8;
+      margin-bottom: 3rem;
+      max-width: 440px;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      padding: 14px 36px;
+      background: rgba(255, 255, 255, 0.12);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 0.5px solid rgba(255, 255, 255, 0.3);
+      color: #fff;
+      font-size: 11px;
+      letter-spacing: 3px;
+      cursor: pointer;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: all 0.25s;
+      display: inline-block;
+    }
+    .btn-primary:hover {
+      background: rgba(255, 255, 255, 0.22);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      padding: 14px 36px;
+      background: transparent;
+      border: 0.5px solid rgba(255, 255, 255, 0.15);
+      color: rgba(255, 255, 255, 0.55);
+      font-size: 11px;
+      letter-spacing: 3px;
+      cursor: pointer;
+      border-radius: 14px;
+      text-decoration: none;
+      transition: all 0.25s;
+      display: inline-block;
+    }
+    .btn-secondary:hover {
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #fff;
+      transform: translateY(-2px);
+    }
+
+    /* SECTIONS */
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 4rem 2rem;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 4px;
+      color: rgba(255, 255, 255, 0.28);
+      margin-bottom: 6px;
+    }
+
+    .section-title {
+      font-size: 30px;
+      font-weight: 500;
+      margin-bottom: 2rem;
+      letter-spacing: 1px;
+    }
+
+    .divider {
+      height: 0.5px;
+      background: rgba(255, 255, 255, 0.07);
+      margin: 0 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* FEATURED DROP */
+    .drop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 18px;
+    }
+
+    .drop-card {
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 0.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      overflow: hidden;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+      text-decoration: none;
+      color: #fff;
+      display: block;
+    }
+    .drop-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .drop-img {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      background: rgba(255, 255, 255, 0.03);
+      position: relative;
+    }
+
+    .drop-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .drop-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      font-size: 9px;
+      letter-spacing: 1px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(127, 119, 221, 0.35);
+      color: #ccc9f7;
+      border: 0.5px solid rgba(127, 119, 221, 0.45);
+    }
+
+    .drop-info { padding: 16px; }
+    .drop-info h3 { font-size: 15px; font-weight: 400; margin-bottom: 5px; }
+    .drop-info p { font-size: 12px; color: rgba(255, 255, 255, 0.38); letter-spacing: 1px; }
+
+    /* CATEGORIES */
+    .cats {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .cat-pill {
+      padding: 10px 22px;
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(15px);
+      -webkit-backdrop-filter: blur(15px);
+      border: 0.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 30px;
+      font-size: 10px;
+      letter-spacing: 3px;
+      color: rgba(255, 255, 255, 0.55);
+      text-decoration: none;
+      transition: all 0.2s;
+      display: inline-block;
+    }
+    .cat-pill:hover {
+      background: rgba(255, 255, 255, 0.13);
+      color: #fff;
+      border-color: rgba(255, 255, 255, 0.3);
+      transform: translateY(-2px);
+    }
+
+    /* VAULT BANNER */
+    .vault-banner {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 0.5px solid rgba(255, 255, 255, 0.12);
+      border-radius: 24px;
+      padding: 3rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .vault-text h2 { font-size: 28px; font-weight: 500; margin-bottom: 10px; }
+    .vault-text p { font-size: 14px; color: rgba(255, 255, 255, 0.4); max-width: 440px; line-height: 1.8; }
+
+    /* ABOUT */
+    .about-glass {
+      background: rgba(255, 255, 255, 0.04);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 0.5px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      padding: 2.5rem;
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .about-icon { font-size: 52px; flex-shrink: 0; }
+    .about-text h2 { font-size: 22px; font-weight: 500; margin-bottom: 12px; }
+    .about-text p { font-size: 14px; color: rgba(255, 255, 255, 0.42); line-height: 1.8; max-width: 500px; }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 2rem;
+      border-top: 0.5px solid rgba(255, 255, 255, 0.07);
+      position: relative;
+      z-index: 1;
+    }
+    footer p { font-size: 10px; color: rgba(255, 255, 255, 0.2); letter-spacing: 2px; }
+
+    @media (max-width: 600px) {
+      nav { padding: 1rem; }
+      .nav-links { gap: 14px; }
+      .hero { padding: 3rem 1.5rem; min-height: 80vh; }
+      section { padding: 3rem 1.5rem; }
+      .divider { margin: 0 1.5rem; }
+      .vault-banner { padding: 2rem 1.5rem; }
+      .about-glass { padding: 1.5rem; }
+      footer { padding: 1.2rem 1.5rem; flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
 </head>
 <body>
 
-<nav class="navbar">
+  <div class="blob b1"></div>
+  <div class="blob b2"></div>
+  <div class="blob b3"></div>
 
-    <div class="logo">
-        DEAD STOCK
+  <nav>
+    <a href="index.html" class="nav-logo">DEAD STOCK</a>
+    <div class="nav-links">
+      <a href="index.html" class="active">HOME</a>
+      <a href="shop.html">SHOP</a>
+      <a href="about.html">ABOUT</a>
+      <a href="contact.html">CONTACT</a>
     </div>
+  </nav>
 
-    <ul class="nav-links">
-        <li><a href="index.html">HOME</a></li>
-        <li><a href="shop.html">SHOP</a></li>
-        <li><a href="about.html">ABOUT</a></li>
-        <li><a href="contact.html">CONTACT</a></li>
-    </ul>
-
-</nav>
-
-<section class="hero">
-
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-
-        <p class="small-text">
-            CURATED THRIFT • STREETWEAR • ACCESSORIES
-        </p>
-
-        <h1>
-    DEAD<br>
-    <span>STOCK</span>
-</h1>
-
-        <p class="tagline">
-            Curated Pieces For Those Who Don't Follow Trends.
-        </p>
-
-        <a href="shop.html" class="cta-btn">
-            ENTER THE VAULT
-        </a>
-
+  <div class="hero">
+    <span class="hero-tag">CURATED THRIFT &bull; STREETWEAR &bull; ACCESSORIES</span>
+    <h1>DEAD<br>STOCK</h1>
+    <p class="hero-sub">Curated Pieces For Those Who Don't Follow Trends.</p>
+    <div class="hero-btns">
+      <a href="shop.html" class="btn-primary">ENTER THE VAULT</a>
+      <a href="shop.html" class="btn-secondary">VIEW DROPS</a>
     </div>
+  </div>
 
-</section>
+  <div class="divider"></div>
 
-<section class="featured">
-
-    <h2>
-        FEATURED DROP
-    </h2>
-
-    <div class="card-container">
-
-        <div class="glass-card">
-            <h3>Vintage Jackets</h3>
-            <p>Handpicked statement pieces.</p>
+  <section>
+    <p class="section-label">LATEST</p>
+    <h2 class="section-title">Featured Drop</h2>
+    <div class="drop-grid">
+      <a href="shop.html" class="drop-card">
+        <div class="drop-img">
+          <span class="drop-badge">NEW</span>
+          <img src="assets/products/jacket.jpg" alt="Vintage Jackets" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span style="display:none;font-size:56px;align-items:center;justify-content:center;width:100%;height:100%">🧥</span>
         </div>
-
-        <div class="glass-card">
-            <h3>Retro Watches</h3>
-            <p>Timeless style.</p>
+        <div class="drop-info">
+          <h3>Vintage Jackets</h3>
+          <p>Handpicked statement pieces.</p>
         </div>
-
-        <div class="glass-card">
-            <h3>Silver Rings</h3>
-            <p>Curated accessories collection.</p>
+      </a>
+      <a href="shop.html" class="drop-card">
+        <div class="drop-img">
+          <img src="assets/products/watch.jpg" alt="Retro Watches" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span style="display:none;font-size:56px;align-items:center;justify-content:center;width:100%;height:100%">⌚</span>
         </div>
-
+        <div class="drop-info">
+          <h3>Retro Watches</h3>
+          <p>Timeless style.</p>
+        </div>
+      </a>
+      <a href="shop.html" class="drop-card">
+        <div class="drop-img">
+          <span style="font-size:56px">💍</span>
+        </div>
+        <div class="drop-info">
+          <h3>Silver Rings</h3>
+          <p>Curated accessories collection.</p>
+        </div>
+      </a>
     </div>
+  </section>
 
-<section class="categories">
+  <div class="divider"></div>
 
-<h2>CATEGORIES</h2>
-
-<div class="category-grid">
-
-<div class="category-card">CLOTHING</div>
-<div class="category-card">WATCHES</div>
-<div class="category-card">RINGS</div>
-<div class="category-card">BELTS</div>
-
-</div>
-
-</section>
-
-<section class="about-preview">
-    
-    <section class="drop-section">
-
-    <div class="drop-card">
-
-        <div class="drop-left">
-
-            <p class="drop-number">DROP 001</p>
-
-            <h2>THE VAULT</h2>
-
-            <p>
-                Exclusive thrifted pieces, rare finds,
-                vintage streetwear and curated accessories.
-            </p>
-
-            <a href="shop.html" class="cta-btn">
-                SHOP NOW
-            </a>
-
-        </div>
-
-        <div class="drop-right">
-
-            <div class="product-preview">
-                VINTAGE
-                JACKET
-            </div>
-
-        </div>
-
+  <section>
+    <p class="section-label">BROWSE BY</p>
+    <h2 class="section-title">Categories</h2>
+    <div class="cats">
+      <a href="shop.html" class="cat-pill">CLOTHING</a>
+      <a href="shop.html" class="cat-pill">WATCHES</a>
+      <a href="shop.html" class="cat-pill">RINGS</a>
+      <a href="shop.html" class="cat-pill">BELTS</a>
+      <a href="shop.html" class="cat-pill">DROP 001</a>
     </div>
+  </section>
 
-</section>
+  <div class="divider"></div>
 
-    <h2>ABOUT DEAD STOCK</h2>
+  <section>
+    <div class="vault-banner">
+      <div class="vault-text">
+        <h2>The Vault</h2>
+        <p>Exclusive thrifted pieces, rare finds, vintage streetwear and curated accessories — all waiting for you.</p>
+      </div>
+      <a href="shop.html" class="btn-primary">SHOP NOW</a>
+    </div>
+  </section>
 
-    <p>
-        Dead Stock is a curated thrift brand focused on
-        individuality, sustainability and street culture.
-        Every item is selected to give unique fashion a second life.
-    </p>
+  <section>
+    <div class="about-glass">
+      <div class="about-icon">♻️</div>
+      <div class="about-text">
+        <h2>About Dead Stock</h2>
+        <p>Dead Stock is a curated thrift brand focused on individuality, sustainability and street culture. Every item is selected to give unique fashion a second life.</p>
+      </div>
+    </div>
+  </section>
 
-</section>
-
-<footer>
-
-    <p>
-        © 2026 DEAD STOCK
-    </p>
-
-</footer>
-
-<script src="js/script.js"></script>
+  <footer>
+    <p>© 2026 DEAD STOCK</p>
+    <p>RARE FINDS. SECOND LIVES.</p>
+  </footer>
 
 </body>
 </html>
