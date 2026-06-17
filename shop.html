@@ -18,33 +18,32 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
       padding: 1.1rem 2rem; background: rgba(15,15,15,0.75);
-      backdrop-filter: blur(16px); border-bottom: 1px solid rgba(229,51,51,0.4);
+      backdrop-filter: blur(20px); border-bottom: 1px solid rgba(229,51,51,0.4);
     }
-    .nav-logo { font-size: 23px; font-weight: 900; letter-spacing: 6px; color: #e53; }
-    .nav-links a { color: #ddd; margin: 0 20px; text-decoration: none; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; }
-    .nav-links a:hover { color: #fff; }
+    .nav-logo { font-size: 22px; font-weight: 900; letter-spacing: 6px; color: #e53; text-decoration: none; }
+    .nav-links a { color: #ddd; margin: 0 20px; text-decoration: none; font-size: 13px; letter-spacing: 2.5px; text-transform: uppercase; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
 
     .search-container {
       background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
       border-radius: 50px; padding: 10px 18px; display: flex; align-items: center; width: 340px;
-      backdrop-filter: blur(10px);
+      backdrop-filter: blur(12px);
     }
     .search-container input {
       background: transparent; border: none; color: #fff; width: 100%; outline: none; font-size: 14.5px;
     }
 
-    /* HERO */
+    /* HERO - Matching Home Page Style */
     .shop-hero {
       padding-top: 120px; text-align: center; padding-bottom: 5rem;
-      background: linear-gradient(180deg, #1a1212, #0a0a0a);
-      position: relative;
+      background: linear-gradient(#1a1212, #0a0a0a); position: relative;
     }
     .shop-hero h1 {
-      font-size: 58px; font-weight: 900; letter-spacing: 12px; color: #fff;
+      font-size: 56px; font-weight: 900; letter-spacing: 12px; color: #fff;
       text-transform: uppercase;
     }
     .shop-hero p {
-      font-size: 14px; letter-spacing: 6px; color: #e53; margin-top: 12px;
+      font-size: 13px; letter-spacing: 6px; color: #e53; margin-top: 12px;
     }
 
     /* FILTERS */
@@ -54,7 +53,7 @@
     }
     .filter-btn {
       padding: 12px 28px; background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.12); color: #ccc;
+      border: 1px solid rgba(255,255,255,0.15); color: #ccc;
       border-radius: 50px; cursor: pointer; font-size: 11.5px; letter-spacing: 2px;
       transition: all 0.3s;
     }
@@ -62,26 +61,22 @@
       background: #e53; color: #000; border-color: #e53;
     }
 
-    /* PRODUCTS */
+    /* PRODUCTS GRID */
     .products-grid {
       display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 28px; padding: 4rem 2rem; max-width: 1700px; margin: 0 auto;
     }
     .product-card {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
       border-radius: 16px; overflow: hidden; cursor: pointer; transition: 0.4s;
-      backdrop-filter: blur(8px);
+      backdrop-filter: blur(10px);
     }
     .product-card:hover {
-      transform: translateY(-15px); border-color: #e53; box-shadow: 0 25px 50px rgba(229,51,51,0.2);
+      transform: translateY(-12px); border-color: #e53; box-shadow: 0 20px 40px rgba(229,51,51,0.2);
     }
-    .product-img {
-      height: 310px; position: relative; overflow: hidden;
-    }
-    .product-img img {
-      width: 100%; height: 100%; object-fit: cover; transition: 0.6s;
-    }
-    .product-card:hover img { transform: scale(1.12); }
+    .product-img { height: 310px; position: relative; overflow: hidden; }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+    .product-card:hover img { transform: scale(1.1); }
     .badge {
       position: absolute; top: 18px; right: 18px; background: #e53; color: #000;
       padding: 6px 16px; font-size: 10px; font-weight: bold; border-radius: 50px;
@@ -103,17 +98,17 @@
     .cart-item img { width: 90px; height: 90px; object-fit: cover; border-radius: 10px; }
     .cart-total { padding: 25px; font-size: 20px; font-weight: 700; border-top: 1px solid rgba(255,255,255,0.1); }
 
-    /* MODAL */
+    /* MODAL - Glassmorphism */
     .modal {
       display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(0,0,0,0.96); z-index: 2000; align-items: center; justify-content: center;
+      background: rgba(0,0,0,0.92); z-index: 2000; align-items: center; justify-content: center;
     }
     .modal-content {
-      background: rgba(20,20,20,0.98); backdrop-filter: blur(12px);
+      background: rgba(20,20,20,0.95); backdrop-filter: blur(16px);
       max-width: 680px; width: 94%; border-radius: 16px; border: 1px solid #e53;
       padding: 30px; max-height: 92vh; overflow-y: auto;
     }
-    .close { float: right; font-size: 40px; cursor: pointer; color: #e53; }
+    .close { float: right; font-size: 38px; cursor: pointer; color: #e53; }
 
     footer { padding: 4rem 2rem; background: #080808; text-align: center; font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 4px; }
   </style>
@@ -130,10 +125,10 @@
       <a href="contact.html">CONTACT</a>
     </div>
     <div class="search-container">
-      <input type="text" id="searchInput" placeholder="Search rare drip..." onkeyup="if(event.key==='Enter') searchProducts()">
+      <input type="text" id="searchInput" placeholder="Search rare finds..." onkeyup="if(event.key==='Enter') searchProducts()">
     </div>
     <div style="display:flex; gap:16px; align-items:center;">
-      <a href="#" onclick="toggleCartDrawer(); return false;" style="font-size:26px; position:relative; color:#fff;">
+      <a href="#" onclick="toggleCartDrawer(); return false;" style="font-size:26px;position:relative;color:#fff;">
         🛒 <span id="navCartCount" style="position:absolute;top:-8px;right:-8px;background:#e53;color:#000;font-size:11px;width:19px;height:19px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</span>
       </a>
       <a href="signup.html" style="padding:9px 20px;background:rgba(255,255,255,0.08);border:1px solid #e53;color:#fff;text-decoration:none;border-radius:8px;font-size:12px;">SIGN UP</a>
@@ -144,7 +139,7 @@
   <!-- HERO -->
   <div class="shop-hero">
     <h1>THE VAULT</h1>
-    <p>CURATED THRIFT • UNDERGROUND FINDS • SECOND LIFE DRIP</p>
+    <p>CURATED THRIFT • UNDERGROUND DRIP • SECOND LIFE</p>
   </div>
 
   <!-- FILTERS -->
@@ -163,13 +158,13 @@
   <!-- CART DRAWER -->
   <div id="cartDrawer">
     <div class="cart-header">
-      <h2>YOUR CART (<span id="drawerCartCount">0</span>)</h2>
+      <h2>CART (<span id="drawerCartCount">0</span>)</h2>
       <span onclick="toggleCartDrawer()" style="cursor:pointer;font-size:32px;color:#e53;">×</span>
     </div>
     <div id="drawerCartItems"></div>
     <div class="cart-total">
       TOTAL: <span id="drawerTotal">₹0</span>
-      <button onclick="checkout()" style="width:100%;margin-top:20px;padding:16px;background:#e53;color:#000;border:none;border-radius:10px;font-weight:bold;font-size:16px;">PROCEED TO CHECKOUT</button>
+      <button onclick="checkout()" style="width:100%;margin-top:20px;padding:16px;background:#e53;color:#000;border:none;border-radius:10px;font-weight:bold;font-size:16px;">CHECKOUT</button>
     </div>
   </div>
 
@@ -203,7 +198,7 @@
 
       const active = filtered.filter(p => p.status === 'active');
       if (active.length === 0) {
-        grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:120px;color:#666;">No pieces found.</p>`;
+        grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:120px;color:#666;">No pieces found in this drop.</p>`;
         return;
       }
 
@@ -269,7 +264,7 @@
       let total = 0;
 
       if (cart.length === 0) {
-        container.innerHTML = `<p style="text-align:center;padding:80px;color:#666;">Your cart is empty</p>`;
+        container.innerHTML = `<p style="text-align:center;padding:80px;color:#666;">Cart is empty</p>`;
         return;
       }
 
@@ -307,7 +302,6 @@
       toggleCartDrawer();
     }
 
-    // Modal
     function showProductDetails(product) {
       currentProduct = product;
       document.getElementById('modalName').textContent = product.name;
@@ -342,7 +336,7 @@
       const text = document.getElementById('newReview').value.trim();
       if (!text) return;
       if (!currentProduct.reviews) currentProduct.reviews = [];
-      currentProduct.reviews.push({name: "Street User", text});
+      currentProduct.reviews.push({name: "Customer", text});
       
       let all = JSON.parse(localStorage.getItem('deadstock_products')) || [];
       const idx = all.findIndex(p => p.id === currentProduct.id);
