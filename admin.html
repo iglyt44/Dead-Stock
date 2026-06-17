@@ -50,6 +50,15 @@
     }
     button:hover { background: #ff6666; }
 
+    #imagePreview {
+      width: 120px;
+      height: 120px;
+      border: 2px dashed #555;
+      border-radius: 8px;
+      object-fit: cover;
+      display: none;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
@@ -73,6 +82,7 @@
     }
     .status-active { color: #0f0; }
     .status-inactive { color: #f66; }
+    .thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
 
     .export { margin: 1rem 0; padding: 12px 24px; background: #333; border: none; color: white; }
   </style>
@@ -100,13 +110,19 @@
         <option value="belt">Belts</option>
         <option value="accessory">Accessories</option>
       </select>
-      <input type="text" id="imageUrl" placeholder="Image URL[](https://...)" />
-      <input type="text" id="badge" placeholder="Badge (NEW, SOLD, DROP 001)" />
+      
+      <div>
+        <button onclick="document.getElementById('fileInput').click()">📸 Choose Image</button>
+        <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+        <img id="imagePreview" alt="Preview">
+      </div>
+
+      <input type="text" id="badge" placeholder="Badge (NEW, SOLD, etc.)" />
       <select id="status">
         <option value="active">Listed (Active)</option>
         <option value="inactive">Delisted (Inactive)</option>
       </select>
-      <button onclick="addProduct()">ADD / UPDATE PRODUCT</button>
+      <button onclick="addProduct()">ADD PRODUCT</button>
     </div>
 
     <button onclick="exportProducts()" class="export">EXPORT ALL PRODUCTS (Copy JSON)</button>
@@ -115,10 +131,10 @@
     <table id="productTable">
       <thead>
         <tr>
+          <th>Image</th>
           <th>Name</th>
           <th>Price</th>
           <th>Category</th>
-          <th>Image</th>
           <th>Badge</th>
           <th>Status</th>
           <th>Action</th>
@@ -129,7 +145,7 @@
   </div>
 
   <script>
-    const ADMIN_PASSWORD = "deadstock2026"; // ← Change this later
+    const ADMIN_PASSWORD = "deadstock2026"; // Change this
 
     let products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
 
@@ -137,73 +153,77 @@
       localStorage.setItem('deadstock_products', JSON.stringify(products));
     }
 
-    function renderTable() {
-      const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = '';
-      products.forEach((p, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${p.name}</td>
-          <td>₹${p.price}</td>
-          <td>${p.category}</td>
-          <td><small>${p.imageUrl ? '✅ Link' : 'No image'}</small></td>
-          <td>${p.badge || '-'}</td>
-          <td><span class="${p.status === 'active' ? 'status-active' : 'status-inactive'}">
-            ${p.status === 'active' ? 'LISTED' : 'DELISTED'}
-          </span></td>
-          <td>
-            <button class="delete-btn" onclick="deleteProduct(${index})">Delete</button>
-          </td>
-        `;
-        tbody.appendChild(row);
-      });
+    function previewImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        document.getElementById('imagePreview').src = ev.target.result;
+        document.getElementById('imagePreview').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
     }
 
     window.addProduct = function() {
       const name = document.getElementById('name').value.trim();
       const price = parseInt(document.getElementById('price').value);
       const category = document.getElementById('category').value;
-      const imageUrl = document.getElementById('imageUrl').value.trim();
       const badge = document.getElementById('badge').value.trim();
       const status = document.getElementById('status').value;
+      const imageData = document.getElementById('imagePreview').src || '';
 
       if (!name || !price) {
         alert("Name and Price are required!");
         return;
       }
-
-      // Check if product already exists (by name)
-      const existingIndex = products.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
-      
-      if (existingIndex !== -1) {
-        // Update existing
-        products[existingIndex] = { id: products[existingIndex].id, name, price, category, imageUrl, badge, status };
-        alert("✅ Product Updated!");
-      } else {
-        products.push({ 
-          id: Date.now(), 
-          name, 
-          price, 
-          category, 
-          imageUrl, 
-          badge, 
-          status 
-        });
-        alert("✅ New Product Added!");
+      if (!imageData) {
+        if (!confirm("Add product without image?")) return;
       }
+
+      products.push({ 
+        id: Date.now(), 
+        name, 
+        price, 
+        category, 
+        imageData, 
+        badge, 
+        status 
+      });
 
       saveProducts();
       renderTable();
+      alert("✅ Product Added!");
 
       // Clear form
       document.getElementById('name').value = '';
       document.getElementById('price').value = '';
-      document.getElementById('imageUrl').value = '';
       document.getElementById('badge').value = '';
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('fileInput').value = '';
     };
 
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      products.forEach((p, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${p.imageData ? `<img class="thumb" src="${p.imageData}">` : 'No Image'}</td>
+          <td>${p.name}</td>
+          <td>₹${p.price}</td>
+          <td>${p.category}</td>
+          <td>${p.badge || '-'}</td>
+          <td><span class="${p.status === 'active' ? 'status-active' : 'status-inactive'}">
+            ${p.status === 'active' ? 'LISTED' : 'DELISTED'}
+          </span></td>
+          <td><button class="delete-btn" onclick="deleteProduct(${index})">Delete</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
     window.deleteProduct = function(index) {
-      if (confirm("Delete this product permanently?")) {
+      if (confirm("Delete this product?")) {
         products.splice(index, 1);
         saveProducts();
         renderTable();
@@ -213,7 +233,7 @@
     window.exportProducts = function() {
       const data = JSON.stringify(products, null, 2);
       navigator.clipboard.writeText(data).then(() => {
-        alert("✅ JSON copied! Paste it here and I'll update your shop.html");
+        alert("✅ JSON copied to clipboard!\nPaste it here and I will update shop.html");
       });
     };
 
