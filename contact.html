@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Contact | DEAD STOCK</title>
+  <meta name="description" content="Contact Dead Stock - Questions, collaborations, or just say what's good." />
+  <title>CONTACT | DEAD STOCK</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -11,17 +12,16 @@
       background: #0a0a0a;
       font-family: 'Segoe UI', system-ui, sans-serif;
       color: #fff;
-      overflow-x: hidden;
+      line-height: 1.6;
     }
 
-    /* NAV */
+    /* NAV - same as other pages */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
       padding: 1.2rem 2rem;
       background: rgba(0,0,0,0.55);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(255,255,255,0.07);
     }
     .nav-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; color: rgba(255,255,255,0.7); text-decoration: none; }
@@ -29,160 +29,137 @@
     .nav-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; transition: color 0.2s; }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-    /* HERO */
-    .hero {
+    .contact-hero {
+      padding-top: 100px;
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      background: linear-gradient(#1a1212, #0a0a0a);
       position: relative;
-      min-height: 52vh;
-      display: flex; flex-direction: column; align-items: center; justify-content: center;
-      text-align: center; padding: 7rem 2rem 4rem;
       overflow: hidden;
     }
-
-    .hero-bg-photo {
-      position: absolute; inset: 0; z-index: 0;
-      background: url('assets/bg-graffiti.jpg') center/cover no-repeat;
-      background-color: #1a1010;
-    }
-
-    /* CSS fallback if no photo */
-    .hero-bg-photo::before {
+    .contact-hero::before {
       content: '';
-      position: absolute; inset: 0;
-      background-image:
-        radial-gradient(ellipse 500px 350px at 0% 0%, rgba(200,20,20,0.32) 0%, transparent 65%),
-        radial-gradient(ellipse 400px 300px at 100% 0%, rgba(0,150,255,0.22) 0%, transparent 65%),
-        radial-gradient(ellipse 350px 280px at 60% 100%, rgba(180,0,220,0.18) 0%, transparent 65%),
-        radial-gradient(ellipse 280px 220px at 10% 90%, rgba(255,200,0,0.18) 0%, transparent 65%),
-        radial-gradient(ellipse 300px 250px at 80% 60%, rgba(0,210,110,0.15) 0%, transparent 65%);
-    }
-
-    .graffiti-tags {
-      position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none;
-    }
-    .tag {
       position: absolute;
-      font-family: Impact, 'Arial Black', sans-serif;
-      font-weight: 900; font-style: italic;
-      text-transform: uppercase; line-height: 1; letter-spacing: -3px;
-      -webkit-text-stroke: 3px currentColor;
-      color: transparent; opacity: 0.11;
+      inset: 0;
+      background: url('assets/bg-graffiti.jpg') center/cover no-repeat;
+      opacity: 0.12;
+    }
+    .contact-hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      padding: 2rem;
+    }
+    .contact-hero h1 {
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      margin-bottom: 1rem;
+    }
+    .contact-hero p {
+      font-size: 14px;
+      color: rgba(255,255,255,0.55);
     }
 
-    .hero-overlay {
-      position: absolute; inset: 0; z-index: 2;
-      background: linear-gradient(to bottom,
-        rgba(0,0,0,0.65) 0%,
-        rgba(0,0,0,0.2) 50%,
-        rgba(0,0,0,0.82) 100%);
-    }
-
-    .hero-content {
-      position: relative; z-index: 5; text-align: center;
-    }
-    .page-tag { font-size: 9px; letter-spacing: 6px; color: #e53; margin-bottom: 12px; display: block; text-transform: uppercase; }
-    .hero-content h1 {
-      font-size: clamp(44px, 9vw, 72px);
-      font-weight: 900; letter-spacing: 4px; line-height: 1; margin-bottom: 12px;
-      font-family: Impact, 'Arial Black', sans-serif; font-style: italic;
-      -webkit-text-stroke: 2px rgba(255,255,255,0.25);
-    }
-    .hero-content p { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 4px; text-transform: uppercase; }
-
-    /* CONTACT BODY */
-    .contact-wrap {
-      padding: 5rem 2rem;
-      max-width: 1080px;
+    .section {
+      padding: 4rem 2rem;
+      max-width: 900px;
       margin: 0 auto;
     }
 
     .contact-grid {
       display: grid;
-      grid-template-columns: 1fr 1.5fr;
+      grid-template-columns: 1fr 1fr;
       gap: 4rem;
       align-items: start;
     }
 
-    /* INFO SIDE */
-    .info-block h2 { font-size: 24px; font-weight: 700; letter-spacing: 2px; margin-bottom: 8px; }
-    .info-block > p { font-size: 13px; color: rgba(255,255,255,0.4); line-height: 1.8; margin-bottom: 2.5rem; }
-
-    .info-item { display: flex; gap: 14px; align-items: flex-start; margin-bottom: 1.5rem; }
-    .info-icon {
-      width: 44px; height: 44px; flex-shrink: 0;
-      background: rgba(220,30,30,0.1); border: 1px solid rgba(220,30,30,0.3);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-size: 18px;
-    }
-    .info-label { font-size: 9px; letter-spacing: 3px; color: #e53; margin-bottom: 4px; text-transform: uppercase; }
-    .info-value { font-size: 13px; color: rgba(255,255,255,0.65); }
-
-    .social-row { display: flex; gap: 10px; margin-top: 2rem; }
-    .s-btn {
-      width: 42px; height: 42px;
-      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px; display: flex; align-items: center; justify-content: center;
-      font-size: 16px; cursor: pointer; transition: all 0.2s; text-decoration: none;
-    }
-    .s-btn:hover { background: rgba(220,30,30,0.2); border-color: rgba(220,30,30,0.5); transform: translateY(-2px); }
-
-    /* FORM SIDE */
-    .glass-form {
+    .contact-form {
       background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 20px; padding: 2.5rem;
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px;
+      padding: 2.5rem;
     }
-
-    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-
-    .form-group { display: flex; flex-direction: column; gap: 7px; margin-bottom: 16px; }
-    .form-group label { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.38); text-transform: uppercase; }
-
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 10px;
+      letter-spacing: 2px;
+      margin-bottom: 6px;
+      color: rgba(255,255,255,0.6);
+      text-transform: uppercase;
+    }
     .form-group input,
-    .form-group textarea,
-    .form-group select {
-      background: rgba(255,255,255,0.05);
+    .form-group textarea {
+      width: 100%;
+      background: rgba(0,0,0,0.4);
       border: 1px solid rgba(255,255,255,0.1);
-      border-radius: 10px; padding: 12px 14px;
-      color: #fff; font-size: 13px; font-family: inherit;
-      outline: none; transition: border-color 0.2s, background 0.2s; width: 100%;
+      color: #fff;
+      padding: 12px 16px;
+      border-radius: 6px;
+      font-size: 14px;
     }
-    .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.2); }
-    .form-group input:focus,
-    .form-group textarea:focus,
-    .form-group select:focus {
-      border-color: rgba(220,30,30,0.55);
-      background: rgba(255,255,255,0.07);
+    .form-group textarea {
+      min-height: 160px;
+      resize: vertical;
     }
-    .form-group textarea { resize: vertical; min-height: 130px; }
-    .form-group select option { background: #1a1a1a; color: #fff; }
-
     .submit-btn {
-      width: 100%; padding: 15px;
-      background: rgba(220,30,30,0.18); border: 1px solid rgba(220,30,30,0.65);
-      color: #fff; font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
-      border-radius: 10px; cursor: pointer; backdrop-filter: blur(10px);
-      transition: all 0.25s; margin-top: 4px;
+      width: 100%;
+      padding: 14px;
+      background: #e53;
+      color: #000;
+      font-size: 11px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      transition: all 0.2s;
     }
-    .submit-btn:hover { background: rgba(220,30,30,0.35); transform: translateY(-2px); }
+    .submit-btn:hover {
+      background: #ff4444;
+      transform: translateY(-2px);
+    }
 
-    .divider { height: 1px; background: rgba(255,255,255,0.06); }
+    .contact-info h3 {
+      font-size: 18px;
+      margin-bottom: 1.5rem;
+      color: #e53;
+    }
+    .contact-info p {
+      margin-bottom: 1rem;
+      color: rgba(255,255,255,0.6);
+    }
+    .contact-info a {
+      color: #fff;
+      text-decoration: none;
+    }
+    .contact-info a:hover {
+      color: #e53;
+    }
 
     footer {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.5rem 2rem; background: #080808; border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 2rem;
+      background: #080808;
+      text-align: center;
+      font-size: 9px;
+      color: rgba(255,255,255,0.18);
+      letter-spacing: 3px;
+      border-top: 1px solid rgba(255,255,255,0.05);
     }
-    footer p { font-size: 9px; color: rgba(255,255,255,0.18); letter-spacing: 3px; }
 
-    @media (max-width: 700px) {
-      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
-      .form-row { grid-template-columns: 1fr; }
-      .contact-wrap { padding: 3rem 1.5rem; }
-      .hero { padding: 6rem 1.5rem 3rem; }
-      nav { padding: 1rem 1.2rem; }
-      .nav-links { gap: 14px; }
-      footer { flex-direction: column; gap: 6px; text-align: center; }
+    @media (max-width: 768px) {
+      .contact-grid {
+        grid-template-columns: 1fr;
+        gap: 3rem;
+      }
+      .section { padding: 3rem 1.5rem; }
     }
   </style>
 </head>
@@ -199,136 +176,117 @@
     <div style="width:28px"></div>
   </nav>
 
-  <!-- HERO -->
-  <div class="hero">
-    <div class="hero-bg-photo"></div>
-
-    <div class="graffiti-tags">
-      <span class="tag" style="font-size:190px;top:-40px;left:-20px;color:#e00;transform:rotate(-8deg)">TALK</span>
-      <span class="tag" style="font-size:130px;top:0;right:-10px;color:#0af;transform:rotate(6deg)">HIT US</span>
-      <span class="tag" style="font-size:100px;bottom:20px;left:4%;color:#fc0;transform:rotate(-5deg)">REACH</span>
-      <span class="tag" style="font-size:110px;bottom:10px;right:4%;color:#0c7;transform:rotate(5deg)">SQUAD</span>
-      <span class="tag" style="font-size:80px;top:42%;left:28%;color:#c0f;transform:rotate(-4deg)">COLLAB</span>
-      <span class="tag" style="font-size:70px;top:22%;left:7%;color:#f60;transform:rotate(8deg)">LINK UP</span>
-      <span class="tag" style="font-size:65px;top:55%;right:18%;color:#e00;transform:rotate(-6deg)">SLIDE IN</span>
-      <span class="tag" style="font-size:60px;top:30%;right:25%;color:#fc0;transform:rotate(4deg)">DEAD</span>
-    </div>
-
-    <div class="hero-overlay"></div>
-
-    <div class="hero-content">
-      <span class="page-tag">Dead Stock</span>
-      <h1>HIT US UP</h1>
-      <p>Collab &bull; Enquiries &bull; Drops</p>
+  <div class="contact-hero">
+    <div class="contact-hero-content">
+      <h1>GET IN TOUCH</h1>
+      <p>Questions • Collabs • New Drops • Just Vibing</p>
     </div>
   </div>
 
-  <div class="divider"></div>
-
-  <!-- CONTACT SECTION -->
-  <div class="contact-wrap">
+  <div class="section">
     <div class="contact-grid">
-
-      <!-- INFO -->
-      <div class="info-block">
-        <h2>Let's Link</h2>
-        <p>Got questions about a drop, want to collab, or just wanna talk street style? Slide into our inbox — we don't ghost.</p>
-
-        <div class="info-item">
-          <div class="info-icon">📍</div>
-          <div>
-            <p class="info-label">Location</p>
-            <p class="info-value">Sholapur, Maharashtra, IN</p>
-          </div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-icon">📧</div>
-          <div>
-            <p class="info-label">Email</p>
-            <p class="info-value">deadstock@email.com</p>
-          </div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-icon">📸</div>
-          <div>
-            <p class="info-label">Instagram</p>
-            <p class="info-value">@deadstock</p>
-          </div>
-        </div>
-
-        <div class="info-item">
-          <div class="info-icon">⏰</div>
-          <div>
-            <p class="info-label">Response Time</p>
-            <p class="info-value">Usually within 24 hours</p>
-          </div>
-        </div>
-
-        <div class="social-row">
-          <a class="s-btn" href="#" title="Instagram">📸</a>
-          <a class="s-btn" href="#" title="Twitter">🐦</a>
-          <a class="s-btn" href="#" title="WhatsApp">💬</a>
-          <a class="s-btn" href="#" title="YouTube">▶️</a>
-        </div>
-      </div>
-
-      <!-- FORM -->
-      <div class="glass-form">
-        <div class="form-row">
+      <!-- Contact Form -->
+      <div class="contact-form">
+        <form id="contactForm">
           <div class="form-group">
-            <label>First Name</label>
-            <input type="text" placeholder="Your name">
+            <label>Name</label>
+            <input type="text" id="name" required placeholder="Your name">
           </div>
           <div class="form-group">
-            <label>Last Name</label>
-            <input type="text" placeholder="Last name">
+            <label>Email</label>
+            <input type="email" id="email" required placeholder="your@email.com">
           </div>
-        </div>
-
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" placeholder="your@email.com">
-        </div>
-
-        <div class="form-group">
-          <label>Phone (optional)</label>
-          <input type="tel" placeholder="+91 00000 00000">
-        </div>
-
-        <div class="form-group">
-          <label>Subject</label>
-          <select>
-            <option value="">Select a topic</option>
-            <option>General Enquiry</option>
-            <option>Collab / Partnership</option>
-            <option>Order Issue</option>
-            <option>Drop Notification</option>
-            <option>Wholesale / Bulk</option>
-            <option>Other</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label>Message</label>
-          <textarea placeholder="What's on your mind..."></textarea>
-        </div>
-
-        <button class="submit-btn" onclick="this.textContent='Message Sent 🔥';this.style.background='rgba(0,180,80,0.25)';this.style.borderColor='rgba(0,180,80,0.5)'">
-          Send It 🔥
-        </button>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea id="message" required placeholder="What's good?"></textarea>
+          </div>
+          <button type="submit" class="submit-btn">SEND MESSAGE →</button>
+        </form>
       </div>
 
+      <!-- Contact Info -->
+      <div class="contact-info">
+        <h3>THE VAULT HQ</h3>
+        <p><strong>Email:</strong><br>
+          <a href="mailto:deadstockvault@gmail.com">deadstockvault@gmail.com</a>
+        </p>
+        <p><strong>Instagram:</strong><br>
+          <a href="https://instagram.com/deadstockvault" target="_blank">@deadstockvault</a>
+        </p>
+        <p><strong>DMs Open</strong><br>
+          For collabs, wholesale, or general inquiries.
+        </p>
+
+        <div style="margin-top: 3rem; padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.1);">
+          <h3>SHIPPING & SUPPORT</h3>
+          <p>We ship across India within 3-7 days.<br>
+             All orders are carefully packed.</p>
+        </div>
+      </div>
     </div>
   </div>
 
-  <div class="divider"></div>
+  <!-- MINI CART -->
+  <div id="miniCart" style="position:fixed;bottom:20px;right:20px;background:rgba(10,10,10,0.95);border:1px solid #e53;border-radius:12px;padding:16px;width:280px;display:none;z-index:1000;box-shadow:0 10px 30px rgba(229,51,51,0.3);">
+    <h3 style="margin:0 0 12px 0;font-size:13px;letter-spacing:2px;">YOUR CART (<span id="cartCount">0</span>)</h3>
+    <div id="cartItems" style="max-height:320px;overflow-y:auto;"></div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);">
+      <div style="display:flex;justify-content:space-between;font-weight:700;"><span>TOTAL</span><span id="cartTotal">₹0</span></div>
+      <button onclick="checkout()" style="width:100%;margin-top:12px;padding:12px;background:#e53;color:#fff;border:none;border-radius:8px;font-size:11px;letter-spacing:2px;">CHECKOUT →</button>
+    </div>
+  </div>
 
   <footer>
-    <p>© 2026 DEAD STOCK</p>
-    <p>RARE FINDS. SECOND LIVES.</p>
+    DEAD STOCK © 2026 • ALL RIGHTS RESERVED • MADE WITH GRIT
   </footer>
 
+  <script>
+    // Contact Form Handler
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value;
+
+      if (name && email && message) {
+        alert(`🔥 Message received, ${name}!\n\nThank you for reaching out.\nWe'll get back to you soon.`);
+        this.reset();
+      }
+    });
+
+    // Cart System (same as other pages)
+    let cart = [];
+    function addToCart(name, price, img = '') {
+      cart.push({name, price, img});
+      updateCart();
+      showMiniCart();
+    }
+    function updateCart() {
+      document.getElementById('cartCount').textContent = cart.length;
+      document.getElementById('cartTotal').textContent = '₹' + cart.reduce((sum, item) => sum + item.price, 0);
+      let html = '';
+      cart.forEach((item, i) => {
+        html += `<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;font-size:13px;">
+          <div>${item.name}</div>
+          <div>₹${item.price} <span onclick="removeFromCart(${i})" style="color:#e53;cursor:pointer;margin-left:8px;">×</span></div>
+        </div>`;
+      });
+      document.getElementById('cartItems').innerHTML = html || '<p style="color:#666;font-size:12px;">Cart empty</p>';
+    }
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCart();
+    }
+    function showMiniCart() {
+      document.getElementById('miniCart').style.display = 'block';
+    }
+    function checkout() {
+      if (cart.length === 0) return;
+      alert("🔥 Thank you! Demo checkout.\n\nTotal: ₹" + cart.reduce((sum, item) => sum + item.price, 0) + "\n\nReal checkout coming soon.");
+      cart = [];
+      updateCart();
+    }
+  </script>
 </body>
 </html>
