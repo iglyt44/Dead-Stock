@@ -13,17 +13,32 @@
       padding: 0;
       box-sizing: border-box;
     }
+
     body {
       font-family: 'Inter', sans-serif;
-      background: #0b0a0a;
+      background: #0b0a0a; /* fallback */
       color: #e5e0db;
       line-height: 1.6;
       min-height: 100vh;
+      position: relative;
     }
+
+    /* ---- CUSTOM BACKGROUND OVERLAY ---- */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background: url('asset/bg-graffiti.jpg') center / cover no-repeat fixed;
+      opacity: 0.2; /* subtle texture — adjust to your liking */
+      z-index: -1;
+      pointer-events: none;
+    }
+
     a {
       text-decoration: none;
       color: inherit;
     }
+
     .container {
       max-width: 1200px;
       margin: 0 auto;
@@ -40,6 +55,7 @@
       backdrop-filter: blur(10px);
       z-index: 100;
     }
+
     .header-inner {
       display: flex;
       align-items: center;
@@ -47,15 +63,15 @@
       flex-wrap: wrap;
       gap: 16px;
     }
-    .logo {
-      font-size: 26px;
-      font-weight: 900;
-      letter-spacing: 4px;
-      color: #fff;
+
+    /* ---- LOGO (IMAGE) ---- */
+    .logo img {
+      height: 45px;
+      width: auto;
+      display: block;
+      max-height: 60px;
     }
-    .logo span {
-      color: #d4a373;
-    }
+
     nav {
       display: flex;
       gap: 32px;
@@ -64,15 +80,18 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+
     nav a {
       cursor: pointer;
       transition: color 0.2s;
       color: #9e958e;
     }
+
     nav a:hover,
     nav a.active {
       color: #fff;
     }
+
     .cart-icon {
       position: relative;
       cursor: pointer;
@@ -86,9 +105,11 @@
       transition: background 0.2s;
       border: 1px solid #3a3532;
     }
+
     .cart-icon:hover {
       background: #2f2a27;
     }
+
     .cart-count {
       background: #d4a373;
       color: #0b0a0a;
@@ -99,11 +120,13 @@
       min-width: 22px;
       text-align: center;
     }
+
     .cart-total {
       font-size: 14px;
       font-weight: 600;
       color: #e5e0db;
     }
+
     .admin-badge {
       font-size: 11px;
       background: #2a2725;
@@ -113,6 +136,7 @@
       letter-spacing: 1px;
       transition: background 0.2s;
     }
+
     .admin-badge:hover {
       background: #3a3532;
       color: #fff;
@@ -124,12 +148,20 @@
       padding: 60px 0 80px;
       animation: fadeUp 0.4s ease;
     }
+
     .page-section.active {
       display: block;
     }
+
     @keyframes fadeUp {
-      0% { opacity: 0; transform: translateY(20px); }
-      100% { opacity: 1; transform: translateY(0); }
+      0% {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      100% {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* ---------- HOME HERO ---------- */
@@ -140,6 +172,7 @@
       text-align: center;
       padding: 40px 0 20px;
     }
+
     .hero h1 {
       font-size: clamp(48px, 10vw, 100px);
       font-weight: 900;
@@ -147,15 +180,18 @@
       text-transform: uppercase;
       letter-spacing: -2px;
     }
+
     .hero h1 .highlight {
       color: #d4a373;
     }
+
     .hero p {
       max-width: 600px;
       font-size: 18px;
       color: #9e958e;
       margin: 20px 0 32px;
     }
+
     .btn-primary {
       background: #d4a373;
       color: #0b0a0a;
@@ -169,10 +205,12 @@
       cursor: pointer;
       transition: background 0.2s, transform 0.1s;
     }
+
     .btn-primary:hover {
       background: #e6b98a;
       transform: scale(1.02);
     }
+
     .btn-secondary {
       background: transparent;
       color: #fff;
@@ -186,9 +224,11 @@
       cursor: pointer;
       transition: background 0.2s;
     }
+
     .btn-secondary:hover {
       background: #1f1c1a;
     }
+
     .hero-badge {
       display: inline-block;
       background: #1f1c1a;
@@ -211,18 +251,22 @@
       gap: 16px;
       margin-bottom: 40px;
     }
+
     .shop-header h2 {
       font-size: 32px;
       font-weight: 800;
     }
+
     .shop-header h2 span {
       color: #d4a373;
     }
+
     .product-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
       gap: 30px;
     }
+
     .product-card {
       background: #131110;
       border: 1px solid #2a2725;
@@ -230,10 +274,12 @@
       overflow: hidden;
       transition: transform 0.2s, border-color 0.2s;
     }
+
     .product-card:hover {
       transform: translateY(-6px);
       border-color: #d4a373;
     }
+
     .product-img {
       width: 100%;
       height: 260px;
@@ -246,24 +292,29 @@
       font-weight: 900;
       letter-spacing: 4px;
     }
+
     .product-info {
       padding: 18px 20px 22px;
     }
+
     .product-info h3 {
       font-size: 17px;
       font-weight: 600;
       margin-bottom: 4px;
     }
+
     .product-info .desc {
       font-size: 14px;
       color: #9e958e;
       margin-bottom: 12px;
     }
+
     .product-info .price {
       font-size: 20px;
       font-weight: 800;
       color: #d4a373;
     }
+
     .product-info .add-btn {
       margin-top: 14px;
       width: 100%;
@@ -279,6 +330,7 @@
       text-transform: uppercase;
       letter-spacing: 1px;
     }
+
     .product-info .add-btn:hover {
       background: #d4a373;
       color: #0b0a0a;
@@ -291,38 +343,46 @@
       gap: 60px;
       align-items: center;
     }
+
     @media (max-width: 768px) {
       .about-grid {
         grid-template-columns: 1fr;
         gap: 30px;
       }
     }
+
     .about-grid h2 {
       font-size: 40px;
       font-weight: 800;
       line-height: 1.2;
     }
+
     .about-grid h2 span {
       color: #d4a373;
     }
+
     .about-grid p {
       color: #9e958e;
       font-size: 17px;
       margin: 16px 0;
     }
+
     .about-stats {
       display: flex;
       gap: 40px;
       margin-top: 24px;
     }
+
     .about-stats div {
       text-align: center;
     }
+
     .about-stats .num {
       font-size: 32px;
       font-weight: 900;
       color: #fff;
     }
+
     .about-stats .label {
       font-size: 14px;
       color: #9e958e;
@@ -335,25 +395,31 @@
       grid-template-columns: 1fr 1fr;
       gap: 60px;
     }
+
     @media (max-width: 768px) {
       .contact-wrap {
         grid-template-columns: 1fr;
       }
     }
+
     .contact-wrap h2 {
       font-size: 36px;
       font-weight: 800;
     }
+
     .contact-wrap h2 span {
       color: #d4a373;
     }
+
     .contact-wrap p {
       color: #9e958e;
       margin: 12px 0 24px;
     }
+
     .form-group {
       margin-bottom: 20px;
     }
+
     .form-group label {
       display: block;
       font-weight: 600;
@@ -363,6 +429,7 @@
       margin-bottom: 6px;
       color: #9e958e;
     }
+
     .form-group input,
     .form-group textarea {
       width: 100%;
@@ -374,21 +441,25 @@
       font-size: 16px;
       transition: border 0.2s;
     }
+
     .form-group input:focus,
     .form-group textarea:focus {
       outline: none;
       border-color: #d4a373;
     }
+
     .form-group textarea {
       height: 120px;
       resize: vertical;
     }
+
     .contact-info-item {
       display: flex;
       gap: 14px;
       margin-bottom: 18px;
       align-items: center;
     }
+
     .contact-info-item .icon {
       font-size: 22px;
     }
@@ -406,9 +477,11 @@
       display: none;
       justify-content: flex-end;
     }
+
     .cart-overlay.open {
       display: flex;
     }
+
     .cart-sidebar {
       background: #131110;
       width: 100%;
@@ -420,6 +493,7 @@
       flex-direction: column;
       height: 100%;
     }
+
     .cart-sidebar h2 {
       font-size: 28px;
       font-weight: 800;
@@ -428,19 +502,23 @@
       justify-content: space-between;
       align-items: center;
     }
+
     .cart-sidebar h2 .close-cart {
       cursor: pointer;
       font-size: 28px;
       color: #9e958e;
       transition: color 0.2s;
     }
+
     .cart-sidebar h2 .close-cart:hover {
       color: #fff;
     }
+
     .cart-items {
       flex: 1;
       margin: 20px 0;
     }
+
     .cart-item {
       display: flex;
       justify-content: space-between;
@@ -448,21 +526,26 @@
       padding: 14px 0;
       border-bottom: 1px solid #2a2725;
     }
+
     .cart-item .item-info {
       flex: 1;
     }
+
     .cart-item .item-name {
       font-weight: 600;
     }
+
     .cart-item .item-price {
       color: #d4a373;
       font-weight: 700;
     }
+
     .cart-item .qty-control {
       display: flex;
       align-items: center;
       gap: 12px;
     }
+
     .cart-item .qty-control button {
       background: #2a2725;
       border: none;
@@ -475,15 +558,18 @@
       font-size: 16px;
       transition: background 0.2s;
     }
+
     .cart-item .qty-control button:hover {
       background: #d4a373;
       color: #0b0a0a;
     }
+
     .cart-item .qty-control span {
       min-width: 20px;
       text-align: center;
       font-weight: 700;
     }
+
     .cart-total-row {
       padding: 20px 0;
       border-top: 2px solid #d4a373;
@@ -492,6 +578,7 @@
       display: flex;
       justify-content: space-between;
     }
+
     .checkout-btn {
       background: #d4a373;
       color: #0b0a0a;
@@ -506,9 +593,11 @@
       transition: background 0.2s;
       width: 100%;
     }
+
     .checkout-btn:hover {
       background: #e6b98a;
     }
+
     .empty-cart-msg {
       text-align: center;
       color: #9e958e;
@@ -524,6 +613,7 @@
       color: #6b625b;
       font-size: 14px;
     }
+
     footer span {
       color: #d4a373;
     }
@@ -545,6 +635,7 @@
       transition: opacity 0.3s;
       pointer-events: none;
     }
+
     .toast.show {
       opacity: 1;
     }
@@ -556,34 +647,46 @@
         align-items: stretch;
         gap: 12px;
       }
+
       nav {
         justify-content: center;
         gap: 18px;
         font-size: 13px;
         flex-wrap: wrap;
       }
+
       .cart-icon {
         justify-content: center;
         padding: 10px;
       }
+
       .hero h1 {
         font-size: 44px;
       }
+
       .product-grid {
         grid-template-columns: 1fr 1fr;
         gap: 16px;
       }
+
       .product-img {
         height: 160px;
         font-size: 40px;
       }
+
       .product-info {
         padding: 12px 14px 16px;
       }
+
       .product-info h3 {
         font-size: 15px;
       }
+
+      .logo img {
+        height: 35px;
+      }
     }
+
     @media (max-width: 420px) {
       .product-grid {
         grid-template-columns: 1fr;
@@ -599,7 +702,11 @@
   <!-- HEADER -->
   <header>
     <div class="container header-inner">
-      <div class="logo">DEAD <span>STOCK</span></div>
+      <!-- LOGO (IMAGE) -->
+      <a href="index.html" class="logo">
+        <img src="asset/logo.png" alt="Dead Stock Logo" />
+      </a>
+
       <nav id="mainNav">
         <a class="active" data-section="home">Home</a>
         <a data-section="shop">Shop</a>
@@ -607,6 +714,7 @@
         <a data-section="contact">Contact</a>
         <a href="admin.html" class="admin-badge">⚙️ Admin</a>
       </nav>
+
       <div class="cart-icon" id="cartIcon">
         🛒
         <span class="cart-count" id="cartCount">0</span>
@@ -917,8 +1025,6 @@
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) {
         renderProducts();
-        // Re-link cart items to current products
-        // (cart items store product index, which stays consistent)
       }
     });
   </script>
