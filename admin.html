@@ -3,247 +3,446 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ADMIN | DEAD STOCK</title>
+  <title>Admin — Dead Stock</title>
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
+      font-family: 'Segoe UI', system-ui, sans-serif;
       background: #0a0a0a;
-      font-family: 'Segoe UI', sans-serif;
-      color: #fff;
-    }
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1rem 2rem;
-      background: rgba(0,0,0,0.9);
-      border-bottom: 1px solid #e53;
-    }
-    .nav-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; color: #e53; }
-
-    .container { max-width: 1200px; margin: 90px auto; padding: 2rem; }
-    .header { text-align: center; margin-bottom: 2rem; }
-    .header h1 { color: #e53; letter-spacing: 4px; }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 1rem;
-      background: #111;
+      color: #e5e0db;
       padding: 2rem;
-      border-radius: 12px;
-      border: 1px solid rgba(229,51,51,0.3);
-      margin-bottom: 2rem;
     }
-    input, select, textarea, button {
-      padding: 12px;
-      background: #1a1a1a;
-      border: 1px solid #444;
-      color: #fff;
-      border-radius: 6px;
-    }
-    textarea { min-height: 100px; resize: vertical; }
-    button {
-      background: #e53;
-      color: #000;
-      font-weight: bold;
-      cursor: pointer;
-      letter-spacing: 2px;
-    }
-    button:hover { background: #ff6666; }
 
-    table {
+    .admin-container {
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    h1 {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      margin-bottom: 0.25rem;
+      color: #fff;
+    }
+
+    h1 span {
+      color: #d4a373;
+    }
+
+    .subtitle {
+      color: #9e958e;
+      margin-bottom: 2rem;
+      font-size: 0.95rem;
+    }
+
+    /* -------- FORM -------- */
+    .form-card {
+      background: #131110;
+      border: 1px solid #2a2725;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.2rem;
+    }
+
+    @media (max-width: 600px) {
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: #9e958e;
+      margin-bottom: 4px;
+    }
+
+    .form-group input,
+    .form-group textarea {
       width: 100%;
-      border-collapse: collapse;
-      background: #111;
-      border-radius: 12px;
-      overflow: hidden;
+      padding: 10px 14px;
+      background: #1f1c1a;
+      border: 1px solid #2a2725;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 0.95rem;
+      transition: border 0.2s;
     }
-    th, td {
-      padding: 12px;
-      text-align: left;
-      border-bottom: 1px solid #333;
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #d4a373;
     }
-    th { background: #1a1a1a; color: #e53; }
-    .delete-btn {
-      background: #900;
-      color: white;
+
+    .form-group textarea {
+      resize: vertical;
+      min-height: 60px;
+    }
+
+    .btn-primary {
+      background: #d4a373;
+      color: #0b0a0a;
       border: none;
-      padding: 6px 12px;
-      border-radius: 4px;
+      padding: 12px 32px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      border-radius: 60px;
       cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
     }
-    .thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
+
+    .btn-primary:hover {
+      background: #e6b98a;
+      transform: scale(1.02);
+    }
+
+    .btn-danger {
+      background: #a03a3a;
+      color: #fff;
+      border: none;
+      padding: 6px 16px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .btn-danger:hover {
+      background: #c44a4a;
+    }
+
+    .btn-edit {
+      background: #2a5a7a;
+      color: #fff;
+      border: none;
+      padding: 6px 16px;
+      font-weight: 600;
+      font-size: 0.75rem;
+      border-radius: 40px;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-right: 6px;
+    }
+
+    .btn-edit:hover {
+      background: #3a7a9a;
+    }
+
+    /* -------- PRODUCT LIST -------- */
+    .product-list-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .product-list-header h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+    }
+
+    .product-grid-admin {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .product-card-admin {
+      background: #131110;
+      border: 1px solid #2a2725;
+      border-radius: 14px;
+      padding: 1.2rem;
+      transition: border-color 0.2s;
+    }
+
+    .product-card-admin:hover {
+      border-color: #d4a373;
+    }
+
+    .product-card-admin .emoji {
+      font-size: 2.4rem;
+      margin-bottom: 6px;
+    }
+
+    .product-card-admin .pname {
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .product-card-admin .pdesc {
+      color: #9e958e;
+      font-size: 0.85rem;
+      margin: 4px 0 8px;
+    }
+
+    .product-card-admin .pprice {
+      color: #d4a373;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    .product-card-admin .actions {
+      margin-top: 12px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+
+    .empty-msg {
+      color: #6b625b;
+      text-align: center;
+      padding: 2rem 0;
+      grid-column: 1 / -1;
+    }
+
+    /* -------- TOAST -------- */
+    .toast {
+      position: fixed;
+      bottom: 30px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #d4a373;
+      color: #0b0a0a;
+      padding: 12px 28px;
+      border-radius: 60px;
+      font-weight: 700;
+      font-size: 0.9rem;
+      z-index: 300;
+      opacity: 0;
+      transition: opacity 0.3s;
+      pointer-events: none;
+    }
+
+    .toast.show {
+      opacity: 1;
+    }
+
+    /* back link */
+    .back-link {
+      display: inline-block;
+      margin-top: 2rem;
+      color: #9e958e;
+      text-decoration: none;
+      font-size: 0.9rem;
+      transition: color 0.2s;
+    }
+
+    .back-link:hover {
+      color: #fff;
+    }
   </style>
 </head>
 <body>
 
-  <nav>
-    <a href="index.html" class="nav-logo">DEAD STOCK ADMIN</a>
-    <a href="shop.html" style="color:#aaa; text-decoration:none;">← Back to Shop</a>
-  </nav>
+  <div class="admin-container">
+    <h1>⚙️ <span>VAULT</span> ADMIN</h1>
+    <p class="subtitle">Add, edit, or remove products — changes appear instantly on the main store.</p>
 
-  <div class="container">
-    <div class="header">
-      <h1>PRODUCT ADMIN PANEL</h1>
+    <!-- ====== FORM ====== -->
+    <div class="form-card">
+      <form id="productForm">
+        <input type="hidden" id="editId" value="" />
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Product Name *</label>
+            <input type="text" id="productName" placeholder="e.g. Vintage Nike Hoodie" required />
+          </div>
+          <div class="form-group">
+            <label>Price (₹) *</label>
+            <input type="number" id="productPrice" placeholder="e.g. 2200" required min="1" />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label>Description</label>
+            <input type="text" id="productDesc" placeholder="e.g. 90s reverse weave, rare colourway" />
+          </div>
+          <div class="form-group">
+            <label>Emoji / Icon</label>
+            <input type="text" id="productEmoji" placeholder="e.g. 🧥 or 👕" value="👕" maxlength="4" />
+          </div>
+        </div>
+
+        <button type="submit" class="btn-primary" id="formBtn">➕ Add Product</button>
+        <button type="button" class="btn-primary" id="cancelEditBtn" style="display:none; background:#555; margin-left:10px;">↩ Cancel</button>
+      </form>
     </div>
 
-    <div class="form-grid">
-      <input type="text" id="name" placeholder="Product Name" />
-      <input type="number" id="price" placeholder="Price (₹)" />
-      <select id="category">
-        <option value="clothing">Clothing</option>
-        <option value="watch">Watches</option>
-        <option value="ring">Rings</option>
-        <option value="belt">Belts</option>
-        <option value="accessory">Accessories</option>
-      </select>
-      
-      <div>
-        <button onclick="document.getElementById('fileInput').click()">📸 Choose Image</button>
-        <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(event)">
-        <img id="imagePreview" style="width:120px;height:120px;object-fit:cover;border-radius:8px;display:none;margin-top:8px;">
-      </div>
-
-      <input type="text" id="badge" placeholder="Badge (NEW, SOLD...)" />
-      <select id="status">
-        <option value="active">Listed (Active)</option>
-        <option value="inactive">Delisted (Inactive)</option>
-      </select>
-      
-      <textarea id="description" placeholder="Product Description (material, size, story etc.)"></textarea>
-      
-      <button onclick="addProduct()">ADD / UPDATE PRODUCT</button>
+    <!-- ====== PRODUCT LIST ====== -->
+    <div class="product-list-header">
+      <h2>📦 Saved Products</h2>
+      <span style="color:#9e958e; font-size:0.85rem;" id="productCount">0 items</span>
     </div>
 
-    <button onclick="exportProducts()" style="margin:10px 0;padding:12px 24px;background:#333;color:white;border:none;">EXPORT PRODUCTS (Copy JSON)</button>
+    <div class="product-grid-admin" id="productGridAdmin">
+      <div class="empty-msg">No products yet. Add your first drop above!</div>
+    </div>
 
-    <h2 style="margin:2rem 0 1rem;">Current Products</h2>
-    <table id="productTable">
-      <thead>
-        <tr>
-          <th>Image</th>
-          <th>Name</th>
-          <th>Price</th>
-          <th>Category</th>
-          <th>Status</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody id="tableBody"></tbody>
-    </table>
+    <a href="index.html" class="back-link">← Back to Store</a>
   </div>
 
+  <!-- TOAST -->
+  <div id="toast" class="toast"></div>
+
   <script>
-    const ADMIN_PASSWORD = "deadstock2026";
+    // -------- HELPERS --------
+    const toastEl = document.getElementById('toast');
+    let toastTimeout;
 
-    let products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(toastTimeout);
+      toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 2200);
+    }
 
-    function saveProducts() {
+    // -------- STORAGE --------
+    function getProducts() {
+      try {
+        const data = localStorage.getItem('deadstock_products');
+        return data ? JSON.parse(data) : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveProducts(products) {
       localStorage.setItem('deadstock_products', JSON.stringify(products));
     }
 
-    function previewImage(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      const reader = new FileReader();
-      reader.onload = function(ev) {
-        const preview = document.getElementById('imagePreview');
-        preview.src = ev.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
-    }
+    // -------- RENDER GRID --------
+    function renderAdminGrid() {
+      const products = getProducts();
+      const grid = document.getElementById('productGridAdmin');
+      const count = document.getElementById('productCount');
 
-    window.addProduct = function() {
-      const name = document.getElementById('name').value.trim();
-      const price = parseInt(document.getElementById('price').value);
-      const category = document.getElementById('category').value;
-      const badge = document.getElementById('badge').value.trim();
-      const status = document.getElementById('status').value;
-      const description = document.getElementById('description').value.trim();
-      const imageData = document.getElementById('imagePreview').src || '';
+      count.textContent = `${products.length} item${products.length !== 1 ? 's' : ''}`;
 
-      if (!name || !price) {
-        alert("Name and Price are required!");
+      if (products.length === 0) {
+        grid.innerHTML = `<div class="empty-msg">No products yet. Add your first drop above!</div>`;
         return;
       }
 
-      const existingIndex = products.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+      grid.innerHTML = products.map((p, index) => `
+        <div class="product-card-admin">
+          <div class="emoji">${p.emoji || '👕'}</div>
+          <div class="pname">${p.name}</div>
+          <div class="pdesc">${p.desc || ''}</div>
+          <div class="pprice">₹${Number(p.price).toLocaleString()}</div>
+          <div class="actions">
+            <button class="btn-edit" onclick="editProduct(${index})">✎ Edit</button>
+            <button class="btn-danger" onclick="deleteProduct(${index})">✕ Delete</button>
+          </div>
+        </div>
+      `).join('');
+    }
 
-      if (existingIndex !== -1) {
-        products[existingIndex] = { ...products[existingIndex], price, category, badge, status, description, imageData };
-        alert("✅ Product Updated!");
+    // -------- CRUD --------
+    function deleteProduct(index) {
+      if (!confirm('Remove this product from the vault?')) return;
+      const products = getProducts();
+      products.splice(index, 1);
+      saveProducts(products);
+      renderAdminGrid();
+      showToast('🗑️ Product removed');
+    }
+
+    function editProduct(index) {
+      const products = getProducts();
+      const p = products[index];
+      if (!p) return;
+
+      document.getElementById('editId').value = index;
+      document.getElementById('productName').value = p.name || '';
+      document.getElementById('productPrice').value = p.price || '';
+      document.getElementById('productDesc').value = p.desc || '';
+      document.getElementById('productEmoji').value = p.emoji || '👕';
+
+      document.getElementById('formBtn').textContent = '💾 Update Product';
+      document.getElementById('cancelEditBtn').style.display = 'inline-block';
+
+      // Scroll to form
+      document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // -------- FORM SUBMIT --------
+    document.getElementById('productForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const name = document.getElementById('productName').value.trim();
+      const price = parseFloat(document.getElementById('productPrice').value);
+      const desc = document.getElementById('productDesc').value.trim();
+      const emoji = document.getElementById('productEmoji').value.trim() || '👕';
+      const editIndex = document.getElementById('editId').value;
+
+      if (!name || !price) {
+        showToast('⚠️ Name and price are required');
+        return;
+      }
+
+      const products = getProducts();
+      const newProduct = { name, price, desc, emoji };
+
+      if (editIndex !== '') {
+        // Update existing
+        products[parseInt(editIndex)] = newProduct;
+        saveProducts(products);
+        showToast('✅ Product updated');
+        document.getElementById('editId').value = '';
+        document.getElementById('formBtn').textContent = '➕ Add Product';
+        document.getElementById('cancelEditBtn').style.display = 'none';
       } else {
-        products.push({
-          id: Date.now(),
-          name,
-          price,
-          category,
-          badge,
-          status,
-          description: description || "Rare curated thrift piece.",
-          imageData
-        });
-        alert("✅ Product Added!");
+        // Add new
+        products.push(newProduct);
+        saveProducts(products);
+        showToast('🎉 Product added!');
       }
 
-      saveProducts();
-      renderTable();
-      clearForm();
-    };
+      document.getElementById('productForm').reset();
+      document.getElementById('productEmoji').value = '👕';
+      renderAdminGrid();
+    });
 
-    function clearForm() {
-      document.getElementById('name').value = '';
-      document.getElementById('price').value = '';
-      document.getElementById('badge').value = '';
-      document.getElementById('description').value = '';
-      document.getElementById('imagePreview').style.display = 'none';
-      document.getElementById('fileInput').value = '';
-    }
+    // -------- CANCEL EDIT --------
+    document.getElementById('cancelEditBtn').addEventListener('click', () => {
+      document.getElementById('editId').value = '';
+      document.getElementById('formBtn').textContent = '➕ Add Product';
+      document.getElementById('cancelEditBtn').style.display = 'none';
+      document.getElementById('productForm').reset();
+      document.getElementById('productEmoji').value = '👕';
+      showToast('↩ Edit cancelled');
+    });
 
-    function renderTable() {
-      const tbody = document.getElementById('tableBody');
-      tbody.innerHTML = '';
-      products.forEach((p, index) => {
-        const row = document.createElement('tr');
-        row.innerHTML = `
-          <td>${p.imageData ? `<img class="thumb" src="${p.imageData}">` : 'No Image'}</td>
-          <td>${p.name}</td>
-          <td>₹${p.price}</td>
-          <td>${p.category}</td>
-          <td style="color:${p.status === 'active' ? '#0f0' : '#f66'}">${p.status.toUpperCase()}</td>
-          <td><button class="delete-btn" onclick="deleteProduct(${index})">Delete</button></td>
-        `;
-        tbody.appendChild(row);
-      });
-    }
-
-    window.deleteProduct = function(index) {
-      if (confirm("Delete this product?")) {
-        products.splice(index, 1);
-        saveProducts();
-        renderTable();
-      }
-    };
-
-    window.exportProducts = function() {
-      const data = JSON.stringify(products, null, 2);
-      navigator.clipboard.writeText(data).then(() => {
-        alert("✅ JSON copied! Paste it here if you want me to check.");
-      });
-    };
-
-    function checkPassword() {
-      const pass = prompt("Enter Admin Password:");
-      if (pass !== ADMIN_PASSWORD) {
-        alert("❌ Wrong Password");
-        window.location.href = "index.html";
-      } else {
-        renderTable();
-      }
-    }
-
-    window.onload = checkPassword;
+    // -------- INIT --------
+    renderAdminGrid();
   </script>
+
 </body>
 </html>
