@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ADMIN | DEAD STOCK</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0,0,0,0.8);
+      border-bottom: 1px solid #e53;
+    }
+    .nav-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; color: #e53; }
+
+    .container { max-width: 1100px; margin: 90px auto; padding: 2rem; }
+    .header { text-align: center; margin-bottom: 2rem; }
+    .header h1 { color: #e53; letter-spacing: 4px; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(229,51,51,0.3);
+      margin-bottom: 2rem;
+    }
+    input, select, button {
+      padding: 12px;
+      background: #1a1a1a;
+      border: 1px solid #444;
+      color: #fff;
+      border-radius: 6px;
+    }
+    button {
+      background: #e53;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      letter-spacing: 2px;
+    }
+    button:hover { background: #ff6666; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #111;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+    th { background: #1a1a1a; color: #e53; }
+    .delete-btn {
+      background: #900;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .export {
+      margin: 1rem 0;
+      padding: 12px 24px;
+      background: #333;
+      border: none;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">DEAD STOCK ADMIN</a>
+    <a href="shop.html" style="color:#aaa; text-decoration:none;">← Back to Shop</a>
+  </nav>
+
+  <div class="container">
+    <div class="header">
+      <h1>PRODUCT ADMIN PANEL</h1>
+      <p style="color:#666;">Add / Manage Products</p>
+    </div>
+
+    <!-- Add Product Form -->
+    <div class="form-grid">
+      <input type="text" id="name" placeholder="Product Name (e.g. Vintage Denim Jacket)" />
+      <input type="number" id="price" placeholder="Price (e.g. 999)" />
+      <select id="category">
+        <option value="clothing">Clothing</option>
+        <option value="watch">Watches</option>
+        <option value="ring">Rings</option>
+        <option value="belt">Belts</option>
+        <option value="accessory">Accessories</option>
+      </select>
+      <input type="text" id="img" placeholder="Image Emoji or URL" value="🧥" />
+      <input type="text" id="badge" placeholder="Badge (NEW, DROP 001, etc.)" />
+      <button onclick="addProduct()">ADD PRODUCT</button>
+    </div>
+
+    <button onclick="exportProducts()" class="export">EXPORT PRODUCTS (Copy JSON)</button>
+
+    <h2 style="margin: 2rem 0 1rem;">Current Products</h2>
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Image</th>
+          <th>Badge</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    const ADMIN_PASSWORD = "deadstock2026"; // Change this to your own password
+
+    let products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
+
+    function saveProducts() {
+      localStorage.setItem('deadstock_products', JSON.stringify(products));
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      products.forEach((p, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${p.name}</td>
+          <td>₹${p.price}</td>
+          <td>${p.category}</td>
+          <td>${p.img}</td>
+          <td>${p.badge || ''}</td>
+          <td><button class="delete-btn" onclick="deleteProduct(${index})">Delete</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    window.addProduct = function() {
+      const name = document.getElementById('name').value.trim();
+      const price = parseInt(document.getElementById('price').value);
+      const category = document.getElementById('category').value;
+      const img = document.getElementById('img').value.trim();
+      const badge = document.getElementById('badge').value.trim();
+
+      if (!name || !price) {
+        alert("Name and Price are required!");
+        return;
+      }
+
+      products.push({ id: Date.now(), name, price, category, img, badge });
+      saveProducts();
+      renderTable();
+
+      // Clear form
+      document.getElementById('name').value = '';
+      document.getElementById('price').value = '';
+      document.getElementById('badge').value = '';
+      alert("✅ Product Added!");
+    };
+
+    window.deleteProduct = function(index) {
+      if (confirm("Delete this product?")) {
+        products.splice(index, 1);
+        saveProducts();
+        renderTable();
+      }
+    };
+
+    window.exportProducts = function() {
+      const data = JSON.stringify(products, null, 2);
+      navigator.clipboard.writeText(data).then(() => {
+        alert("✅ Products JSON copied to clipboard!\nSend it to me and I'll update shop.html");
+      });
+    };
+
+    // Simple Password Protection
+    function checkPassword() {
+      const pass = prompt("Enter Admin Password:");
+      if (pass !== ADMIN_PASSWORD) {
+        alert("❌ Wrong Password");
+        window.location.href = "index.html";
+      } else {
+        renderTable();
+      }
+    }
+
+    // Initialize
+    window.onload = checkPassword;
+  </script>
+</body>
+</html>
