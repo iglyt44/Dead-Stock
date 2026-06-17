@@ -15,18 +15,18 @@
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
       padding: 1rem 2rem;
-      background: rgba(0,0,0,0.8);
+      background: rgba(0,0,0,0.9);
       border-bottom: 1px solid #e53;
     }
     .nav-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; color: #e53; }
 
-    .container { max-width: 1100px; margin: 90px auto; padding: 2rem; }
+    .container { max-width: 1200px; margin: 90px auto; padding: 2rem; }
     .header { text-align: center; margin-bottom: 2rem; }
     .header h1 { color: #e53; letter-spacing: 4px; }
 
     .form-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 1rem;
       background: #111;
       padding: 2rem;
@@ -71,14 +71,10 @@
       border-radius: 4px;
       cursor: pointer;
     }
+    .status-active { color: #0f0; }
+    .status-inactive { color: #f66; }
 
-    .export {
-      margin: 1rem 0;
-      padding: 12px 24px;
-      background: #333;
-      border: none;
-      color: white;
-    }
+    .export { margin: 1rem 0; padding: 12px 24px; background: #333; border: none; color: white; }
   </style>
 </head>
 <body>
@@ -91,13 +87,12 @@
   <div class="container">
     <div class="header">
       <h1>PRODUCT ADMIN PANEL</h1>
-      <p style="color:#666;">Add / Manage Products</p>
     </div>
 
     <!-- Add Product Form -->
     <div class="form-grid">
-      <input type="text" id="name" placeholder="Product Name (e.g. Vintage Denim Jacket)" />
-      <input type="number" id="price" placeholder="Price (e.g. 999)" />
+      <input type="text" id="name" placeholder="Product Name" />
+      <input type="number" id="price" placeholder="Price (₹)" />
       <select id="category">
         <option value="clothing">Clothing</option>
         <option value="watch">Watches</option>
@@ -105,12 +100,16 @@
         <option value="belt">Belts</option>
         <option value="accessory">Accessories</option>
       </select>
-      <input type="text" id="img" placeholder="Image Emoji or URL" value="🧥" />
-      <input type="text" id="badge" placeholder="Badge (NEW, DROP 001, etc.)" />
-      <button onclick="addProduct()">ADD PRODUCT</button>
+      <input type="text" id="imageUrl" placeholder="Image URL[](https://...)" />
+      <input type="text" id="badge" placeholder="Badge (NEW, SOLD, DROP 001)" />
+      <select id="status">
+        <option value="active">Listed (Active)</option>
+        <option value="inactive">Delisted (Inactive)</option>
+      </select>
+      <button onclick="addProduct()">ADD / UPDATE PRODUCT</button>
     </div>
 
-    <button onclick="exportProducts()" class="export">EXPORT PRODUCTS (Copy JSON)</button>
+    <button onclick="exportProducts()" class="export">EXPORT ALL PRODUCTS (Copy JSON)</button>
 
     <h2 style="margin: 2rem 0 1rem;">Current Products</h2>
     <table id="productTable">
@@ -121,6 +120,7 @@
           <th>Category</th>
           <th>Image</th>
           <th>Badge</th>
+          <th>Status</th>
           <th>Action</th>
         </tr>
       </thead>
@@ -129,7 +129,7 @@
   </div>
 
   <script>
-    const ADMIN_PASSWORD = "deadstock2026"; // Change this to your own password
+    const ADMIN_PASSWORD = "deadstock2026"; // ← Change this later
 
     let products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
 
@@ -146,9 +146,14 @@
           <td>${p.name}</td>
           <td>₹${p.price}</td>
           <td>${p.category}</td>
-          <td>${p.img}</td>
-          <td>${p.badge || ''}</td>
-          <td><button class="delete-btn" onclick="deleteProduct(${index})">Delete</button></td>
+          <td><small>${p.imageUrl ? '✅ Link' : 'No image'}</small></td>
+          <td>${p.badge || '-'}</td>
+          <td><span class="${p.status === 'active' ? 'status-active' : 'status-inactive'}">
+            ${p.status === 'active' ? 'LISTED' : 'DELISTED'}
+          </span></td>
+          <td>
+            <button class="delete-btn" onclick="deleteProduct(${index})">Delete</button>
+          </td>
         `;
         tbody.appendChild(row);
       });
@@ -158,27 +163,47 @@
       const name = document.getElementById('name').value.trim();
       const price = parseInt(document.getElementById('price').value);
       const category = document.getElementById('category').value;
-      const img = document.getElementById('img').value.trim();
+      const imageUrl = document.getElementById('imageUrl').value.trim();
       const badge = document.getElementById('badge').value.trim();
+      const status = document.getElementById('status').value;
 
       if (!name || !price) {
         alert("Name and Price are required!");
         return;
       }
 
-      products.push({ id: Date.now(), name, price, category, img, badge });
+      // Check if product already exists (by name)
+      const existingIndex = products.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
+      
+      if (existingIndex !== -1) {
+        // Update existing
+        products[existingIndex] = { id: products[existingIndex].id, name, price, category, imageUrl, badge, status };
+        alert("✅ Product Updated!");
+      } else {
+        products.push({ 
+          id: Date.now(), 
+          name, 
+          price, 
+          category, 
+          imageUrl, 
+          badge, 
+          status 
+        });
+        alert("✅ New Product Added!");
+      }
+
       saveProducts();
       renderTable();
 
       // Clear form
       document.getElementById('name').value = '';
       document.getElementById('price').value = '';
+      document.getElementById('imageUrl').value = '';
       document.getElementById('badge').value = '';
-      alert("✅ Product Added!");
     };
 
     window.deleteProduct = function(index) {
-      if (confirm("Delete this product?")) {
+      if (confirm("Delete this product permanently?")) {
         products.splice(index, 1);
         saveProducts();
         renderTable();
@@ -188,11 +213,10 @@
     window.exportProducts = function() {
       const data = JSON.stringify(products, null, 2);
       navigator.clipboard.writeText(data).then(() => {
-        alert("✅ Products JSON copied to clipboard!\nSend it to me and I'll update shop.html");
+        alert("✅ JSON copied! Paste it here and I'll update your shop.html");
       });
     };
 
-    // Simple Password Protection
     function checkPassword() {
       const pass = prompt("Enter Admin Password:");
       if (pass !== ADMIN_PASSWORD) {
@@ -203,7 +227,6 @@
       }
     }
 
-    // Initialize
     window.onload = checkPassword;
   </script>
 </body>
