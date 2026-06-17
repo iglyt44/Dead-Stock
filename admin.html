@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin — Dead Stock Vault</title>
   <style>
-    /* ---------- RESET & BASE ---------- */
     * {
       margin: 0;
       padding: 0;
@@ -21,13 +20,13 @@
       position: relative;
     }
 
-    /* ---- CUSTOM BACKGROUND (same as main site) ---- */
+    /* ---- CUSTOM BACKGROUND (NOW VISIBLE) ---- */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background: url('asset/bg-graffiti.jpg') center / cover no-repeat fixed;
-      opacity: 0.15;
+      opacity: 0.25;
       z-index: -1;
       pointer-events: none;
     }
@@ -39,7 +38,6 @@
       z-index: 1;
     }
 
-    /* ---------- HEADER / LOGO ---------- */
     .admin-header {
       display: flex;
       justify-content: space-between;
@@ -55,6 +53,10 @@
       height: 45px;
       width: auto;
       display: block;
+      border: 1px solid #d4a373;
+      border-radius: 6px;
+      padding: 4px;
+      background: #0b0a0a;
     }
 
     .header-actions {
@@ -107,7 +109,6 @@
       font-size: 0.95rem;
     }
 
-    /* -------- FORM -------- */
     .form-card {
       background: rgba(19, 17, 16, 0.92);
       backdrop-filter: blur(4px);
@@ -210,7 +211,6 @@
       background: #3a7a9a;
     }
 
-    /* -------- PRODUCT LIST -------- */
     .product-list-header {
       display: flex;
       justify-content: space-between;
@@ -273,7 +273,6 @@
       grid-column: 1 / -1;
     }
 
-    /* -------- TOAST -------- */
     .toast {
       position: fixed;
       bottom: 30px;
@@ -294,9 +293,7 @@
       opacity: 1;
     }
 
-    /* ============================================================
-       PASSWORD OVERLAY (hides everything until unlocked)
-       ============================================================ */
+    /* PASSWORD OVERLAY */
     #authOverlay {
       position: fixed;
       inset: 0;
@@ -326,6 +323,10 @@
     .auth-box img {
       height: 55px;
       margin-bottom: 16px;
+      border: 1px solid #d4a373;
+      border-radius: 6px;
+      padding: 4px;
+      background: #0b0a0a;
     }
 
     .auth-box h2 {
@@ -402,12 +403,10 @@
 </head>
 <body>
 
-  <!-- ==========================================================
-  PASSWORD OVERLAY (shown by default)
-  ========================================================== -->
+  <!-- PASSWORD OVERLAY -->
   <div id="authOverlay">
     <div class="auth-box">
-      <img src="asset/logo.png" alt="Dead Stock Logo" />
+      <img src="asset/logo.png" alt="Dead Stock Logo" onerror="this.alt='DEAD STOCK'; this.style.fontSize='20px'; this.style.fontWeight='bold'; this.style.color='#d4a373';" />
       <h2>VAULT <span>ADMIN</span></h2>
       <p>Enter the password to manage your drops.</p>
       <input type="password" id="passwordInput" placeholder="••••••••" autofocus />
@@ -416,11 +415,8 @@
     </div>
   </div>
 
-  <!-- ==========================================================
-  MAIN ADMIN CONTENT (hidden until unlocked)
-  ========================================================== -->
+  <!-- MAIN ADMIN CONTENT -->
   <div class="admin-container" id="adminContent">
-    <!-- Header with Logo & Logout -->
     <div class="admin-header">
       <a href="index.html" class="logo">
         <img src="asset/logo.png" alt="Dead Stock Logo" />
@@ -434,11 +430,9 @@
     <h1>⚙️ <span>VAULT</span> ADMIN</h1>
     <p class="subtitle">Add, edit, or remove products — changes appear instantly on the main store.</p>
 
-    <!-- ====== FORM ====== -->
     <div class="form-card">
       <form id="productForm">
         <input type="hidden" id="editId" value="" />
-
         <div class="form-row">
           <div class="form-group">
             <label>Product Name *</label>
@@ -449,7 +443,6 @@
             <input type="number" id="productPrice" placeholder="e.g. 2200" required min="1" />
           </div>
         </div>
-
         <div class="form-row">
           <div class="form-group">
             <label>Description</label>
@@ -460,13 +453,11 @@
             <input type="text" id="productEmoji" placeholder="e.g. 🧥 or 👕" value="👕" maxlength="4" />
           </div>
         </div>
-
         <button type="submit" class="btn-primary" id="formBtn">➕ Add Product</button>
         <button type="button" class="btn-primary" id="cancelEditBtn" style="display:none; background:#555; margin-left:10px;">↩ Cancel</button>
       </form>
     </div>
 
-    <!-- ====== PRODUCT LIST ====== -->
     <div class="product-list-header">
       <h2>📦 Saved Products</h2>
       <span style="color:#9e958e; font-size:0.85rem;" id="productCount">0 items</span>
@@ -477,21 +468,11 @@
     </div>
   </div>
 
-  <!-- TOAST -->
   <div id="toast" class="toast"></div>
 
   <script>
-    // =============================================================
-    // 🔐 PASSWORD CONFIGURATION
-    // =============================================================
-    // ⚠️ SECURITY WARNING: This is client-side protection.
-    // For real security, use a server-side backend.
-    // Change the password below to your own secret key.
-    const ADMIN_PASSWORD = 'deadstock2024'; // <-- CHANGE THIS
+    const ADMIN_PASSWORD = 'deadstock2024';
 
-    // =============================================================
-    // AUTH FUNCTIONS
-    // =============================================================
     function checkAuth() {
       if (sessionStorage.getItem('adminAuth') === 'true') {
         document.getElementById('authOverlay').classList.add('hidden');
@@ -507,7 +488,6 @@
     function verifyPassword() {
       const input = document.getElementById('passwordInput').value;
       const errorEl = document.getElementById('authError');
-
       if (input === ADMIN_PASSWORD) {
         sessionStorage.setItem('adminAuth', 'true');
         errorEl.style.display = 'none';
@@ -526,14 +506,10 @@
       showToast('🔒 Vault locked.');
     }
 
-    // Allow "Enter" key on password input
     document.getElementById('passwordInput').addEventListener('keydown', (e) => {
       if (e.key === 'Enter') verifyPassword();
     });
 
-    // =============================================================
-    // STORAGE HELPERS
-    // =============================================================
     function getProducts() {
       try {
         const data = localStorage.getItem('deadstock_products');
@@ -547,21 +523,15 @@
       localStorage.setItem('deadstock_products', JSON.stringify(products));
     }
 
-    // =============================================================
-    // RENDER ADMIN GRID
-    // =============================================================
     function renderAdminGrid() {
       const products = getProducts();
       const grid = document.getElementById('productGridAdmin');
       const count = document.getElementById('productCount');
-
       count.textContent = `${products.length} item${products.length !== 1 ? 's' : ''}`;
-
       if (products.length === 0) {
         grid.innerHTML = `<div class="empty-msg">No products yet. Add your first drop above!</div>`;
         return;
       }
-
       grid.innerHTML = products.map((p, index) => `
         <div class="product-card-admin">
           <div class="emoji">${p.emoji || '👕'}</div>
@@ -576,9 +546,6 @@
       `).join('');
     }
 
-    // =============================================================
-    // CRUD
-    // =============================================================
     function deleteProduct(index) {
       if (!confirm('Remove this product from the vault?')) return;
       const products = getProducts();
@@ -592,39 +559,29 @@
       const products = getProducts();
       const p = products[index];
       if (!p) return;
-
       document.getElementById('editId').value = index;
       document.getElementById('productName').value = p.name || '';
       document.getElementById('productPrice').value = p.price || '';
       document.getElementById('productDesc').value = p.desc || '';
       document.getElementById('productEmoji').value = p.emoji || '👕';
-
       document.getElementById('formBtn').textContent = '💾 Update Product';
       document.getElementById('cancelEditBtn').style.display = 'inline-block';
-
       document.querySelector('.form-card').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // =============================================================
-    // FORM SUBMIT
-    // =============================================================
     document.getElementById('productForm').addEventListener('submit', (e) => {
       e.preventDefault();
-
       const name = document.getElementById('productName').value.trim();
       const price = parseFloat(document.getElementById('productPrice').value);
       const desc = document.getElementById('productDesc').value.trim();
       const emoji = document.getElementById('productEmoji').value.trim() || '👕';
       const editIndex = document.getElementById('editId').value;
-
       if (!name || !price) {
         showToast('⚠️ Name and price are required');
         return;
       }
-
       const products = getProducts();
       const newProduct = { name, price, desc, emoji };
-
       if (editIndex !== '') {
         products[parseInt(editIndex)] = newProduct;
         saveProducts(products);
@@ -637,15 +594,11 @@
         saveProducts(products);
         showToast('🎉 Product added!');
       }
-
       document.getElementById('productForm').reset();
       document.getElementById('productEmoji').value = '👕';
       renderAdminGrid();
     });
 
-    // =============================================================
-    // CANCEL EDIT
-    // =============================================================
     document.getElementById('cancelEditBtn').addEventListener('click', () => {
       document.getElementById('editId').value = '';
       document.getElementById('formBtn').textContent = '➕ Add Product';
@@ -655,9 +608,6 @@
       showToast('↩ Edit cancelled');
     });
 
-    // =============================================================
-    // TOAST
-    // =============================================================
     const toastEl = document.getElementById('toast');
     let toastTimeout;
 
@@ -668,10 +618,6 @@
       toastTimeout = setTimeout(() => toastEl.classList.remove('show'), 2200);
     }
 
-    // =============================================================
-    // INIT
-    // =============================================================
-    // Start with the auth overlay visible
     document.getElementById('adminContent').style.display = 'none';
     checkAuth();
     renderAdminGrid();
