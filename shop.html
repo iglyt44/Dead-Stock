@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Dead Stock Vault - Shop rare thrift streetwear" />
+  <meta name="description" content="Dead Stock Vault - Rare thrift streetwear, vintage jackets, watches & accessories" />
   <title>THE VAULT | DEAD STOCK</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -12,81 +12,134 @@
       font-family: 'Segoe UI', system-ui, sans-serif;
       color: #fff;
       overflow-x: hidden;
+      line-height: 1.5;
     }
+
+    /* NAV */
     nav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 100;
       display: flex; justify-content: space-between; align-items: center;
-      padding: 1rem 2rem; background: rgba(0,0,0,0.85); border-bottom: 1px solid #e53;
+      padding: 1.2rem 2rem; background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(12px); border-bottom: 1px solid rgba(229,51,51,0.3);
     }
-    .nav-logo { font-size: 18px; font-weight: 900; letter-spacing: 4px; color: #e53; text-decoration: none; }
-    .nav-links { display: flex; gap: 25px; }
-    .nav-links a { color: #ccc; text-decoration: none; font-size: 13px; letter-spacing: 2px; }
+    .nav-logo { font-size: 18px; font-weight: 900; letter-spacing: 5px; color: #e53; text-decoration: none; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: #ccc; text-decoration: none; font-size: 12px; letter-spacing: 3px; text-transform: uppercase; }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
 
     .search-container {
-      background: rgba(255,255,255,0.08); border: 1px solid #444; border-radius: 30px;
-      padding: 6px 14px; display: flex; align-items: center; width: 300px;
+      background: rgba(255,255,255,0.06); border: 1px solid #444; border-radius: 30px;
+      padding: 8px 16px; display: flex; align-items: center; width: 320px;
     }
     .search-container input {
       background: transparent; border: none; color: #fff; width: 100%; outline: none; font-size: 14px;
     }
     .search-container button { background: none; border: none; color: #e53; cursor: pointer; font-size: 18px; }
 
+    /* HERO */
+    .shop-hero {
+      padding-top: 110px; background: linear-gradient(#1a1212, #0a0a0a);
+      text-align: center; padding-bottom: 3rem; border-bottom: 1px solid #e53;
+    }
+    .shop-hero h1 {
+      font-size: 48px; font-weight: 900; letter-spacing: 8px; color: #fff;
+    }
+    .shop-hero p {
+      font-size: 12px; letter-spacing: 4px; color: rgba(255,255,255,0.5); text-transform: uppercase;
+    }
+
+    /* FILTERS */
+    .filters {
+      display: flex; justify-content: center; gap: 14px; flex-wrap: wrap;
+      padding: 1.8rem 2rem; background: #111; border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .filter-btn {
+      padding: 10px 24px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      color: #ccc; font-size: 11px; letter-spacing: 2px; text-transform: uppercase;
+      border-radius: 6px; cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn.active, .filter-btn:hover {
+      background: rgba(229,51,51,0.25); border-color: #e53; color: #fff;
+    }
+
+    /* PRODUCTS */
     .products-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 20px;
-      padding: 100px 2rem 3rem; max-width: 1400px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 24px;
+      padding: 4rem 2rem; max-width: 1600px; margin: 0 auto;
     }
     .product-card {
-      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px; overflow: hidden; cursor: pointer; transition: 0.3s;
+      background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 12px; overflow: hidden; transition: all 0.3s; cursor: pointer;
     }
-    .product-card:hover { transform: translateY(-8px); border-color: #e53; }
-    .product-img { height: 260px; background: #111; overflow: hidden; position: relative; }
-    .product-img img { width: 100%; height: 100%; object-fit: cover; }
-    .badge { position: absolute; top: 12px; right: 12px; background: #e53; color: #fff; padding: 4px 10px; font-size: 9px; border-radius: 4px; }
-    .product-info { padding: 16px; }
-    .product-name { font-size: 15px; font-weight: 600; }
-    .product-price { font-size: 18px; font-weight: 700; color: #e53; margin: 6px 0; }
-    .add-btn { width: 100%; padding: 12px; background: transparent; border: 1px solid #e53; color: #fff; cursor: pointer; }
-    .add-btn:hover { background: #e53; color: #000; }
+    .product-card:hover {
+      transform: translateY(-10px); border-color: #e53; box-shadow: 0 15px 35px rgba(229,51,51,0.15);
+    }
+    .product-img {
+      height: 280px; background: #111; position: relative; overflow: hidden;
+    }
+    .product-img img {
+      width: 100%; height: 100%; object-fit: cover; transition: 0.4s;
+    }
+    .product-card:hover img { transform: scale(1.08); }
+    .badge {
+      position: absolute; top: 14px; right: 14px; font-size: 10px; padding: 5px 12px;
+      background: rgba(229,51,51,0.9); color: #fff; border-radius: 4px; letter-spacing: 1px;
+    }
+    .product-info { padding: 18px; }
+    .product-name { font-size: 16px; font-weight: 600; margin-bottom: 6px; }
+    .product-price { font-size: 19px; font-weight: 700; color: #e53; }
 
-    .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center; }
-    .modal-content { background: #111; max-width: 620px; width: 92%; border-radius: 12px; border: 1px solid #e53; padding: 20px; max-height: 92vh; overflow-y: auto; }
-    .close { float: right; font-size: 32px; cursor: pointer; color: #e53; }
+    /* MODAL */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.96); z-index: 2000; align-items: center; justify-content: center;
+    }
+    .modal-content {
+      background: #111; max-width: 680px; width: 94%; border-radius: 12px;
+      border: 1px solid #e53; padding: 25px; max-height: 92vh; overflow-y: auto;
+    }
+    .close { float: right; font-size: 36px; cursor: pointer; color: #e53; }
 
-    footer { padding: 2rem; background: #080808; text-align: center; font-size: 9px; color: rgba(255,255,255,0.18); }
+    footer {
+      padding: 3rem 2rem; background: #080808; text-align: center;
+      font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 3px;
+    }
   </style>
 </head>
 <body>
 
+  <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">DEAD STOCK</a>
     <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="shop.html" class="active">Shop</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
+      <a href="index.html">HOME</a>
+      <a href="shop.html" class="active">SHOP</a>
+      <a href="about.html">ABOUT</a>
+      <a href="contact.html">CONTACT</a>
     </div>
     <div class="search-container">
-      <input type="text" id="searchInput" placeholder="Search jackets, watches..." onkeyup="if(event.key==='Enter') searchProducts()">
-      <button onclick="searchProducts()">🔎</button>
+      <input type="text" id="searchInput" placeholder="Search jackets, watches, rings..." onkeyup="if(event.key==='Enter') searchProducts()">
+      <button onclick="searchProducts()">🔍</button>
     </div>
-    <div style="display:flex; align-items:center; gap:15px;">
-      <a href="#" onclick="showMiniCart(); return false;" style="font-size:22px; position:relative; color:#fff;">
-        🛒 <span id="navCartCount" style="position:absolute; top:-6px; right:-8px; background:#e53; color:#000; font-size:10px; width:18px; height:18px; border-radius:50%; display:flex; align-items:center; justify-content:center;">0</span>
+    <div style="display:flex; gap:15px; align-items:center;">
+      <a href="#" onclick="showMiniCart(); return false;" style="font-size:24px; position:relative; color:#fff;">
+        🛒
+        <span id="navCartCount" style="position:absolute;top:-8px;right:-8px;background:#e53;color:#000;font-size:11px;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;">0</span>
       </a>
-      <a href="signup.html" style="padding:8px 18px; background:rgba(255,255,255,0.1); border:1px solid #e53; color:#fff; text-decoration:none; border-radius:6px; font-size:12px;">SIGN UP</a>
-      <a href="login.html" style="padding:8px 18px; background:#e53; color:#000; text-decoration:none; border-radius:6px; font-size:12px; font-weight:bold;">LOGIN</a>
+      <a href="signup.html" style="padding:9px 18px;background:rgba(255,255,255,0.08);border:1px solid #e53;color:#fff;text-decoration:none;border-radius:6px;font-size:12px;">SIGN UP</a>
+      <a href="login.html" style="padding:9px 18px;background:#e53;color:#000;text-decoration:none;border-radius:6px;font-size:12px;font-weight:bold;">LOGIN</a>
     </div>
   </nav>
 
-  <div class="hero-shop" style="padding-top:90px; text-align:center; padding-bottom:3rem;">
+  <!-- HERO -->
+  <div class="shop-hero">
     <h1>THE VAULT</h1>
-    <p>CURATED THRIFT • RARE DROPS • SECOND LIFE DRIP</p>
+    <p>CURATED THRIFT • UNDERGROUND FINDS • SECOND LIFE DRIP</p>
   </div>
 
-  <div class="filters" style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;padding:1.5rem 2rem;background:#111;">
-    <div class="filter-btn active" onclick="filterCategory('all')">ALL</div>
+  <!-- FILTERS -->
+  <div class="filters">
+    <div class="filter-btn active" onclick="filterCategory('all')">ALL DROPS</div>
     <div class="filter-btn" onclick="filterCategory('clothing')">CLOTHING</div>
     <div class="filter-btn" onclick="filterCategory('watch')">WATCHES</div>
     <div class="filter-btn" onclick="filterCategory('ring')">RINGS</div>
@@ -94,57 +147,62 @@
     <div class="filter-btn" onclick="filterCategory('accessory')">ACCESSORIES</div>
   </div>
 
+  <!-- PRODUCTS GRID -->
   <div class="products-grid" id="productsGrid"></div>
 
   <!-- MINI CART -->
-  <div id="miniCart" style="position:fixed;bottom:20px;right:20px;background:rgba(10,10,10,0.95);border:1px solid #e53;border-radius:12px;padding:16px;width:280px;display:none;z-index:1000;box-shadow:0 10px 30px rgba(229,51,51,0.3);">
-    <h3 style="margin:0 0 12px 0;font-size:13px;letter-spacing:2px;">YOUR CART (<span id="cartCount">0</span>)</h3>
+  <div id="miniCart" style="position:fixed;bottom:30px;right:30px;background:rgba(10,10,10,0.97);border:1px solid #e53;border-radius:12px;padding:20px;width:300px;display:none;z-index:9999;box-shadow:0 15px 40px rgba(229,51,51,0.4);">
+    <h3 style="margin:0 0 15px 0;letter-spacing:2px;">YOUR CART (<span id="cartCount">0</span>)</h3>
     <div id="cartItems" style="max-height:320px;overflow-y:auto;"></div>
-    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);">
-      <div style="display:flex;justify-content:space-between;font-weight:700;"><span>TOTAL</span><span id="cartTotal">₹0</span></div>
-      <button onclick="checkout()" style="width:100%;margin-top:12px;padding:12px;background:#e53;color:#fff;border:none;border-radius:8px;font-size:11px;letter-spacing:2px;">CHECKOUT →</button>
+    <div style="margin-top:15px;padding-top:15px;border-top:1px solid #444;">
+      <div style="display:flex;justify-content:space-between;font-size:18px;font-weight:700;"><span>TOTAL</span><span id="cartTotal">₹0</span></div>
+      <button onclick="checkout()" style="width:100%;margin-top:15px;padding:14px;background:#e53;color:#000;border:none;border-radius:8px;font-weight:bold;">CHECKOUT →</button>
     </div>
   </div>
 
-  <!-- PRODUCT MODAL -->
+  <!-- PRODUCT DETAIL MODAL -->
   <div id="productModal" class="modal">
     <div class="modal-content">
       <span class="close" onclick="closeModal()">×</span>
-      <div id="modalImage" style="text-align:center;margin:15px 0;"></div>
-      <h2 id="modalName"></h2>
-      <div id="modalPrice" style="font-size:22px;font-weight:700;color:#e53;"></div>
-      <div id="modalDesc" style="color:#ccc;line-height:1.6;margin:15px 0;"></div>
+      <div id="modalImage" style="text-align:center;margin:20px 0;"></div>
+      <h2 id="modalName" style="font-size:26px;margin-bottom:8px;"></h2>
+      <div id="modalPrice" style="font-size:24px;font-weight:700;color:#e53;margin-bottom:15px;"></div>
+      <div id="modalDesc" style="color:#bbb;line-height:1.7;margin-bottom:25px;"></div>
       
-      <h3>Reviews</h3>
-      <div id="reviewsList" style="max-height:280px;overflow-y:auto;background:#1a1a1a;padding:10px;border-radius:8px;"></div>
+      <h3 style="margin:20px 0 12px;">Reviews</h3>
+      <div id="reviewsList" style="max-height:300px;overflow-y:auto;background:#1a1a1a;padding:15px;border-radius:8px;"></div>
       
-      <textarea id="newReview" placeholder="Write your review..." style="width:100%;margin-top:15px;padding:12px;background:#222;color:#fff;border:1px solid #444;border-radius:6px;min-height:80px;"></textarea>
-      <button onclick="submitReview()" style="margin-top:8px;padding:12px 24px;background:#e53;color:#000;border:none;border-radius:6px;">POST REVIEW</button>
+      <textarea id="newReview" placeholder="Write your review..." style="width:100%;margin-top:20px;padding:14px;background:#1a1a1a;color:#fff;border:1px solid #444;border-radius:8px;min-height:90px;"></textarea>
+      <button onclick="submitReview()" style="margin-top:12px;padding:14px 28px;background:#e53;color:#000;border:none;border-radius:8px;font-weight:bold;">POST REVIEW</button>
     </div>
   </div>
 
-  <footer>DEAD STOCK © 2026 • ALL RIGHTS RESERVED • MADE WITH GRIT</footer>
+  <footer>
+    DEAD STOCK © 2026 • UNDERGROUND THRIFT • ALL RIGHTS RESERVED
+  </footer>
 
   <script>
     let products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
     let cart = JSON.parse(localStorage.getItem('deadstock_cart')) || [];
+    let currentProduct = null;
 
-    function renderProducts(filteredProducts = products) {
+    function renderProducts(filtered = products) {
       const grid = document.getElementById('productsGrid');
       grid.innerHTML = '';
 
-      const active = filteredProducts.filter(p => p.status === 'active');
-      if (active.length === 0) {
-        grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;color:#666;padding:60px;">No products found.</p>`;
+      const activeProducts = filtered.filter(p => p.status === 'active');
+      
+      if (activeProducts.length === 0) {
+        grid.innerHTML = `<p style="grid-column:1/-1;text-align:center;padding:80px;color:#666;font-size:15px;">No products found in this category yet.<br>More drops coming soon.</p>`;
         return;
       }
 
-      active.forEach(product => {
+      activeProducts.forEach(product => {
         const card = document.createElement('div');
         card.className = 'product-card';
         card.innerHTML = `
           <div class="product-img">
-            ${product.imageData ? `<img src="${product.imageData}" alt="${product.name}">` : `<span style="font-size:100px">🛍️</span>`}
+            ${product.imageData ? `<img src="${product.imageData}" alt="${product.name}">` : `<span style="font-size:110px">🛍️</span>`}
             ${product.badge ? `<div class="badge">${product.badge}</div>` : ''}
           </div>
           <div class="product-info">
@@ -156,7 +214,6 @@
         card.onclick = () => showProductDetails(product);
         grid.appendChild(card);
       });
-      updateNavCartCount();
     }
 
     function filterCategory(cat) {
@@ -168,23 +225,23 @@
     }
 
     function searchProducts() {
-      const q = document.getElementById('searchInput').value.toLowerCase().trim();
-      if (!q) return;
+      const query = document.getElementById('searchInput').value.toLowerCase().trim();
+      if (!query) return renderProducts();
+      
       const filtered = products.filter(p => 
-        p.name.toLowerCase().includes(q) || 
-        (p.description && p.description.toLowerCase().includes(q))
+        p.name.toLowerCase().includes(query) || 
+        (p.description && p.description.toLowerCase().includes(query))
       );
       renderProducts(filtered);
     }
 
     function addToCart(id) {
       const product = products.find(p => p.id === id);
-      if (product) {
-        cart.push(product);
-        localStorage.setItem('deadstock_cart', JSON.stringify(cart));
-        updateNavCartCount();
-        alert(`${product.name} added to cart!`);
-      }
+      if (!product) return;
+      cart.push(product);
+      localStorage.setItem('deadstock_cart', JSON.stringify(cart));
+      updateNavCartCount();
+      alert(`${product.name} added to cart 🔥`);
     }
 
     function updateNavCartCount() {
@@ -192,59 +249,77 @@
     }
 
     function showMiniCart() {
-      // Simple alert for now - you can expand later
-      let text = "Your Cart:\n\n";
-      cart.forEach((item, i) => text += `${i+1}. ${item.name} - ₹${item.price}\n`);
-      text += `\nTotal: ₹${cart.reduce((a,c)=>a+c.price,0)}`;
-      alert(text || "Cart is empty");
+      let msg = "🛒 YOUR CART\n\n";
+      if (cart.length === 0) msg += "Cart is empty";
+      else {
+        cart.forEach((item,i) => msg += `${i+1}. ${item.name} - ₹${item.price}\n`);
+        msg += `\nTotal: ₹${cart.reduce((sum,item)=>sum+item.price,0)}`;
+      }
+      alert(msg);
     }
 
     function checkout() {
-      if (cart.length === 0) return alert("Cart is empty");
-      alert(`Thank you! Total: ₹${cart.reduce((a,c)=>a+c.price,0)}\n\n(This is demo)`);
+      if (cart.length === 0) return;
+      alert(`Thank you for shopping at Dead Stock!\n\nTotal: ₹${cart.reduce((sum,item)=>sum+item.price,0)}\n\n(This is a demo)`);
       cart = [];
       localStorage.setItem('deadstock_cart', JSON.stringify(cart));
       updateNavCartCount();
     }
 
     // Modal
-    let currentProduct = null;
     function showProductDetails(product) {
       currentProduct = product;
       document.getElementById('modalName').textContent = product.name;
       document.getElementById('modalPrice').textContent = `₹${product.price}`;
-      document.getElementById('modalDesc').textContent = product.description || "Rare thrift piece curated with care.";
-      document.getElementById('modalImage').innerHTML = product.imageData ? `<img src="${product.imageData}" style="max-width:100%;border-radius:10px;">` : `<span style="font-size:140px">🛍️</span>`;
+      document.getElementById('modalDesc').textContent = product.description || "Handpicked rare thrift. One of a kind street piece.";
+      document.getElementById('modalImage').innerHTML = product.imageData 
+        ? `<img src="${product.imageData}" style="max-width:100%;border-radius:12px;">` 
+        : `<span style="font-size:160px">🛍️</span>`;
       renderReviews();
       document.getElementById('productModal').style.display = 'flex';
     }
-    function closeModal() { document.getElementById('productModal').style.display = 'none'; }
+
+    function closeModal() {
+      document.getElementById('productModal').style.display = 'none';
+    }
+
     function renderReviews() {
       const container = document.getElementById('reviewsList');
       container.innerHTML = '';
       const reviews = currentProduct.reviews || [];
-      if (reviews.length === 0) container.innerHTML = '<p style="color:#666;text-align:center;">No reviews yet.</p>';
-      else reviews.forEach(r => {
-        const d = document.createElement('div');
-        d.style = "background:#1a1a1a;padding:12px;border-radius:8px;margin-bottom:10px;";
-        d.innerHTML = `<strong>${r.name||'User'}</strong><br><small>${r.text}</small>`;
-        container.appendChild(d);
+      if (reviews.length === 0) {
+        container.innerHTML = `<p style="color:#666;text-align:center;padding:20px;">No reviews yet. Be the first.</p>`;
+        return;
+      }
+      reviews.forEach(r => {
+        const div = document.createElement('div');
+        div.style = "background:#1a1a1a;padding:14px;border-radius:8px;margin-bottom:12px;";
+        div.innerHTML = `<strong>${r.name || 'Customer'}</strong><br><small>${r.text}</small>`;
+        container.appendChild(div);
       });
     }
+
     function submitReview() {
       const text = document.getElementById('newReview').value.trim();
-      if (!text) return;
+      if (!text || !currentProduct) return;
       if (!currentProduct.reviews) currentProduct.reviews = [];
-      currentProduct.reviews.push({name: "Customer", text});
-      let all = JSON.parse(localStorage.getItem('deadstock_products')) || [];
-      const idx = all.findIndex(p => p.id === currentProduct.id);
-      if (idx > -1) all[idx] = currentProduct;
-      localStorage.setItem('deadstock_products', JSON.stringify(all));
+      currentProduct.reviews.push({name: "Street User", text});
+      
+      let allProducts = JSON.parse(localStorage.getItem('deadstock_products')) || [];
+      const index = allProducts.findIndex(p => p.id === currentProduct.id);
+      if (index !== -1) allProducts[index] = currentProduct;
+      localStorage.setItem('deadstock_products', JSON.stringify(allProducts));
+      
       renderReviews();
       document.getElementById('newReview').value = '';
+      alert("Review posted. Respect.");
     }
 
-    window.onload = () => renderProducts();
+    // Initialize
+    window.onload = () => {
+      renderProducts();
+      updateNavCartCount();
+    };
   </script>
 </body>
 </html>
