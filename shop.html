@@ -1,308 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Dead Stock Vault - Shop rare thrift streetwear" />
-  <title>THE VAULT | DEAD STOCK</title>
+  <!-- ... your existing head and styles ... -->
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: #0a0a0a;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      color: #fff;
-      overflow-x: hidden;
+    /* Add this to your existing styles */
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95); z-index: 2000; align-items: center; justify-content: center;
     }
-
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 1.2rem 2rem;
-      background: rgba(0,0,0,0.55);
-      backdrop-filter: blur(14px);
-      border-bottom: 1px solid rgba(255,255,255,0.07);
+    .modal-content {
+      background: #111; max-width: 600px; width: 90%; border-radius: 12px;
+      border: 1px solid #e53; padding: 20px; max-height: 90vh; overflow-y: auto;
     }
-    .nav-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; color: rgba(255,255,255,0.7); text-decoration: none; }
-    .nav-links { display: flex; gap: 28px; }
-    .nav-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; transition: color 0.2s; }
-    .nav-links a:hover, .nav-links a.active { color: #fff; }
-
-    .hero-shop {
-      padding-top: 90px;
-      background: linear-gradient(#1a1212, #0a0a0a);
-      text-align: center;
-      padding-bottom: 3rem;
-    }
-    .hero-shop h1 {
-      font-size: 42px; font-weight: 900; letter-spacing: 6px;
-      margin-bottom: 8px; color: #fff;
-    }
-    .hero-shop p { font-size: 11px; letter-spacing: 4px; color: rgba(255,255,255,0.4); text-transform: uppercase; }
-
-    .filters {
-      display: flex; justify-content: center; gap: 12px; flex-wrap: wrap;
-      padding: 1.5rem 2rem; background: #111; border-bottom: 1px solid rgba(255,255,255,0.08);
-    }
-    .filter-btn {
-      padding: 8px 20px;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.1);
-      color: rgba(255,255,255,0.6);
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      border-radius: 4px; cursor: pointer; transition: all 0.2s;
-    }
-    .filter-btn.active, .filter-btn:hover {
-      background: rgba(220,30,30,0.2);
-      border-color: #e53;
-      color: #fff;
-    }
-
-    .products-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-      gap: 20px;
-      padding: 3rem 2rem;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
-
-    .product-card {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 12px;
-      overflow: hidden;
-      transition: all 0.25s;
-      color: #fff;
-      display: flex;
-      flex-direction: column;
-    }
-    .product-card:hover {
-      transform: translateY(-8px);
-      border-color: rgba(220,30,30,0.5);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.6);
-    }
-    .product-img {
-      height: 260px;
-      background: #111;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .product-img img {
-      width: 100%; height: 100%; object-fit: cover;
-    }
-    .product-img span {
-      font-size: 100px;
-    }
-    .badge {
-      position: absolute; top: 12px; right: 12px;
-      font-size: 9px; padding: 4px 10px; border-radius: 4px;
-      background: rgba(220,30,30,0.9); color: #fff;
-      letter-spacing: 1px;
-    }
-    .product-info {
-      padding: 16px;
-      flex-grow: 1;
-      display: flex;
-      flex-direction: column;
-    }
-    .product-name {
-      font-size: 15px; font-weight: 600; margin-bottom: 4px; letter-spacing: 0.5px;
-    }
-    .product-desc {
-      font-size: 12px; color: rgba(255,255,255,0.45); margin-bottom: 12px; flex-grow: 1;
-    }
-    .product-price {
-      font-size: 17px; font-weight: 700; color: #fff; margin-bottom: 12px;
-    }
-    .add-btn {
-      margin-top: auto;
-      padding: 12px;
-      background: transparent;
-      border: 1px solid #e53;
-      color: #fff;
-      font-size: 10px; letter-spacing: 3px; text-transform: uppercase;
-      cursor: pointer; transition: all 0.2s;
-    }
-    .add-btn:hover {
-      background: #e53;
-      color: #000;
-    }
-    .add-btn:disabled {
-      opacity: 0.4; cursor: not-allowed; background: #333;
-    }
-
-    #miniCart {
-      position:fixed; bottom:20px; right:20px; background:rgba(10,10,10,0.95);
-      border:1px solid #e53; border-radius:12px; padding:16px; width:280px;
-      display:none; z-index:1000; box-shadow:0 10px 30px rgba(229,51,51,0.3);
-    }
-
-    footer {
-      padding: 2rem; background: #080808; text-align: center;
-      font-size: 9px; color: rgba(255,255,255,0.18); letter-spacing: 3px;
-    }
-
-    @media (max-width: 600px) {
-      .products-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; padding: 2rem 1rem; }
-      .product-img { height: 200px; }
-    }
+    .close { float: right; font-size: 28px; cursor: pointer; color: #e53; }
   </style>
 </head>
 <body>
+  <!-- ... your nav, hero, filters, products-grid ... -->
 
-  <nav>
-    <a href="index.html" class="nav-logo">DS</a>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="shop.html" class="active">Shop</a>
-      <a href="about.html">About</a>
-      <a href="contact.html">Contact</a>
-    </div>
-    <div style="width:28px"></div>
-  </nav>
-
-  <div class="hero-shop">
-    <h1>THE VAULT</h1>
-    <p>CURATED THRIFT • RARE DROPS • SECOND LIFE DRIP</p>
-  </div>
-
-  <div class="filters">
-    <div class="filter-btn active" onclick="filterCategory('all')">ALL</div>
-    <div class="filter-btn" onclick="filterCategory('clothing')">CLOTHING</div>
-    <div class="filter-btn" onclick="filterCategory('watch')">WATCHES</div>
-    <div class="filter-btn" onclick="filterCategory('ring')">RINGS</div>
-    <div class="filter-btn" onclick="filterCategory('belt')">BELTS</div>
-    <div class="filter-btn" onclick="filterCategory('accessory')">ACCESSORIES</div>
-  </div>
-
-  <div class="products-grid" id="productsGrid">
-    <!-- Products loaded from Admin -->
-  </div>
-
-  <!-- MINI CART -->
-  <div id="miniCart">
-    <h3 style="margin:0 0 12px 0;font-size:13px;letter-spacing:2px;">YOUR CART (<span id="cartCount">0</span>)</h3>
-    <div id="cartItems" style="max-height:320px;overflow-y:auto;"></div>
-    <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);">
-      <div style="display:flex;justify-content:space-between;font-weight:700;"><span>TOTAL</span><span id="cartTotal">₹0</span></div>
-      <button onclick="checkout()" style="width:100%;margin-top:12px;padding:12px;background:#e53;color:#fff;border:none;border-radius:8px;font-size:11px;letter-spacing:2px;">CHECKOUT →</button>
+  <!-- Product Detail Modal -->
+  <div id="productModal" class="modal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">×</span>
+      <div id="modalImage" style="text-align:center;margin:15px 0;"></div>
+      <h2 id="modalName" style="margin:10px 0;"></h2>
+      <div id="modalPrice" style="font-size:22px;font-weight:700;color:#e53;margin:8px 0;"></div>
+      <div id="modalDesc" style="color:#ccc;line-height:1.6;margin:15px 0;"></div>
+      
+      <h3 style="margin:20px 0 10px;">Reviews</h3>
+      <div id="reviewsList" style="max-height:300px;overflow-y:auto;"></div>
+      
+      <textarea id="newReview" placeholder="Write your review..." style="width:100%;margin-top:15px;padding:10px;background:#222;color:#fff;border:1px solid #444;border-radius:6px;"></textarea>
+      <button onclick="submitReview()" style="margin-top:8px;padding:10px 20px;background:#e53;color:#000;border:none;border-radius:6px;">Post Review</button>
     </div>
   </div>
-
-  <footer>
-    DEAD STOCK © 2026 • ALL RIGHTS RESERVED • MADE WITH GRIT
-  </footer>
 
   <script>
-    // Load products from Admin Panel
-    let products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
+    // ... your existing cart code ...
 
-    function renderProducts(filteredProducts) {
-      const grid = document.getElementById('productsGrid');
-      grid.innerHTML = '';
+    let currentProductId = null;
 
-      if (filteredProducts.length === 0) {
-        grid.innerHTML = '<p style="grid-column:1/-1;text-align:center;color:#666;padding:3rem;">No products found.</p>';
+    function showProductDetails(product) {
+      currentProductId = product.id;
+      document.getElementById('modalName').textContent = product.name;
+      document.getElementById('modalPrice').textContent = `₹${product.price}`;
+      document.getElementById('modalDesc').textContent = product.description || "No description added yet.";
+      
+      const imgDiv = document.getElementById('modalImage');
+      imgDiv.innerHTML = product.imageData 
+        ? `<img src="${product.imageData}" style="max-width:100%;border-radius:8px;">` 
+        : `<span style="font-size:120px">⌚</span>`;
+
+      renderReviews(product);
+      document.getElementById('productModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('productModal').style.display = 'none';
+    }
+
+    function renderReviews(product) {
+      const container = document.getElementById('reviewsList');
+      container.innerHTML = '';
+      const reviews = product.reviews || [];
+      
+      if (reviews.length === 0) {
+        container.innerHTML = '<p style="color:#666;">No reviews yet. Be the first!</p>';
         return;
       }
-
-      filteredProducts.forEach(product => {
-        if (product.status === 'inactive') return; // Skip delisted products
-
-        const card = document.createElement('div');
-        card.className = 'product-card';
-        card.innerHTML = `
-          <div class="product-img">
-            ${product.imageData 
-              ? `<img src="${product.imageData}" alt="${product.name}">` 
-              : `<span>${product.img || '🛍️'}</span>`}
-            ${product.badge ? `<div class="badge">${product.badge}</div>` : ''}
-          </div>
-          <div class="product-info">
-            <div class="product-name">${product.name}</div>
-            <div class="product-desc">Rare thrift • One of a kind</div>
-            <div class="product-price">₹${product.price}</div>
-            <button class="add-btn" ${product.status === 'inactive' ? 'disabled' : ''}>
-              ${product.status === 'inactive' ? 'DELISTED' : 'ADD TO CART'}
-            </button>
-          </div>
-        `;
-        grid.appendChild(card);
+      
+      reviews.forEach(r => {
+        const div = document.createElement('div');
+        div.style = "background:#1a1a1a;padding:12px;border-radius:8px;margin-bottom:10px;";
+        div.innerHTML = `<strong>${r.name || 'Anonymous'}</strong><br><small>${r.text}</small>`;
+        container.appendChild(div);
       });
     }
 
-    // Filter function
-    window.filterCategory = function(cat) {
-      document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-      event.currentTarget.classList.add('active');
+    function submitReview() {
+      const text = document.getElementById('newReview').value.trim();
+      if (!text || !currentProductId) return;
 
-      let filtered = products;
-      if (cat !== 'all') {
-        filtered = products.filter(p => p.category === cat);
+      let products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
+      const product = products.find(p => p.id === currentProductId);
+      
+      if (product) {
+        if (!product.reviews) product.reviews = [];
+        product.reviews.push({ name: "User", text: text, date: new Date().toLocaleDateString() });
+        localStorage.setItem('deadstock_products', JSON.stringify(products));
+        
+        renderReviews(product);
+        document.getElementById('newReview').value = '';
+        alert("✅ Review posted!");
       }
-      renderProducts(filtered);
-    };
-
-    // Cart System
-    let cart = [];
-    function addToCart(name, price, img = '') {
-      cart.push({name, price, img});
-      updateCart();
-      showMiniCart();
-    }
-    function updateCart() {
-      document.getElementById('cartCount').textContent = cart.length;
-      document.getElementById('cartTotal').textContent = '₹' + cart.reduce((sum, item) => sum + item.price, 0);
-      let html = '';
-      cart.forEach((item, i) => {
-        html += `<div style="display:flex;justify-content:space-between;align-items:center;margin:8px 0;font-size:13px;">
-          <div>${item.name}</div>
-          <div>₹${item.price} <span onclick="removeFromCart(${i})" style="color:#e53;cursor:pointer;margin-left:8px;">×</span></div>
-        </div>`;
-      });
-      document.getElementById('cartItems').innerHTML = html || '<p style="color:#666;font-size:12px;">Cart empty</p>';
-    }
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCart();
-    }
-    function showMiniCart() {
-      document.getElementById('miniCart').style.display = 'block';
-    }
-    function checkout() {
-      if (cart.length === 0) return;
-      alert("🔥 Thank you! This is a demo.\n\nTotal: ₹" + cart.reduce((sum, item) => sum + item.price, 0) + "\n\nReal checkout coming soon.");
-      cart = [];
-      updateCart();
     }
 
-    // Attach Add to Cart buttons
-    function attachCartListeners() {
-      document.querySelectorAll('.add-btn').forEach(btn => {
-        if (btn.disabled) return;
-        btn.addEventListener('click', () => {
-          const card = btn.closest('.product-card');
+    // Make cards clickable
+    function attachCardClick() {
+      document.querySelectorAll('.product-card').forEach(card => {
+        card.style.cursor = 'pointer';
+        card.addEventListener('click', (e) => {
+          if (e.target.classList.contains('add-btn')) return; // don't open modal when clicking add to cart
           const name = card.querySelector('.product-name').textContent;
-          const priceText = card.querySelector('.product-price').textContent;
-          const price = parseInt(priceText.replace('₹', '')) || 999;
-          addToCart(name, price);
-          btn.textContent = '✓ ADDED';
-          setTimeout(() => btn.textContent = 'ADD TO CART', 1500);
+          const products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
+          const product = products.find(p => p.name === name);
+          if (product) showProductDetails(product);
         });
       });
     }
 
-    // Initialize Shop
-    function initShop() {
-      renderProducts(products);
-      setTimeout(attachCartListeners, 300);
-    }
-
-    window.onload = initShop;
+    // Update your renderProducts to call attachCardClick after rendering
+    // Add at the end of renderProducts():
+    setTimeout(attachCardClick, 100);
   </script>
 </body>
 </html>
