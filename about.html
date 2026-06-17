@@ -1,1 +1,283 @@
-<h1>ABOUT</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About | DEAD STOCK</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: #0a0a0a; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.2rem 2rem;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
+    }
+    .nav-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; color: rgba(255,255,255,0.7); text-decoration: none; }
+    .nav-links { display: flex; gap: 28px; }
+    .nav-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: #fff; }
+
+    .hero {
+      position: relative; min-height: 55vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 7rem 2rem 4rem; overflow: hidden;
+    }
+    .hero-bg-photo {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('assets/bg-graffiti.jpg') center/cover no-repeat;
+      background-color: #150f0f;
+    }
+    .hero-bg-photo::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        radial-gradient(ellipse 500px 350px at 5% 0%, rgba(200,20,20,0.32) 0%, transparent 65%),
+        radial-gradient(ellipse 400px 300px at 95% 10%, rgba(0,150,255,0.22) 0%, transparent 65%),
+        radial-gradient(ellipse 350px 280px at 50% 100%, rgba(180,0,220,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 280px 220px at 15% 85%, rgba(255,200,0,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 300px 250px at 80% 60%, rgba(0,210,110,0.15) 0%, transparent 65%);
+    }
+    .graffiti-tags { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+    .tag {
+      position: absolute; font-family: Impact, 'Arial Black', sans-serif;
+      font-weight: 900; font-style: italic; text-transform: uppercase;
+      line-height: 1; letter-spacing: -3px;
+      -webkit-text-stroke: 3px currentColor; color: transparent; opacity: 0.11;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.82) 100%);
+    }
+    .hero-content { position: relative; z-index: 5; text-align: center; }
+    .page-tag { font-size: 9px; letter-spacing: 6px; color: #e53; margin-bottom: 12px; display: block; text-transform: uppercase; }
+    .hero-content h1 {
+      font-size: clamp(44px, 9vw, 72px); font-weight: 900; letter-spacing: 4px; line-height: 1; margin-bottom: 12px;
+      font-family: Impact, 'Arial Black', sans-serif; font-style: italic;
+      -webkit-text-stroke: 2px rgba(255,255,255,0.22);
+    }
+    .hero-content p { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 4px; text-transform: uppercase; }
+
+    .section { padding: 4rem 2rem; background: #0a0a0a; }
+    .section-alt { background: #0d0d0d; }
+    .inner { max-width: 1080px; margin: 0 auto; }
+    .s-label { font-size: 9px; letter-spacing: 5px; color: #e53; margin-bottom: 6px; text-transform: uppercase; }
+    .s-title { font-size: 28px; font-weight: 700; letter-spacing: 2px; margin-bottom: 1.5rem; }
+    .divider { height: 1px; background: rgba(255,255,255,0.06); }
+
+    /* STORY */
+    .story-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+    .story-img {
+      aspect-ratio: 4/3; background: #111; border-radius: 20px;
+      border: 1px solid rgba(255,255,255,0.08);
+      display: flex; align-items: center; justify-content: center; font-size: 90px;
+      position: relative; overflow: hidden;
+    }
+    .story-img::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 40%, rgba(220,30,30,0.12), transparent 70%);
+    }
+    .story-img img { width: 100%; height: 100%; object-fit: cover; border-radius: 20px; }
+    .story-text h3 { font-size: 24px; font-weight: 700; margin-bottom: 14px; letter-spacing: 1px; }
+    .story-text h3 span { color: #e53; }
+    .story-text p { font-size: 14px; color: rgba(255,255,255,0.45); line-height: 1.9; margin-bottom: 1rem; }
+
+    /* VALUES */
+    .vals { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+    .val-card {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; padding: 1.8rem;
+      transition: transform 0.25s, border-color 0.25s;
+    }
+    .val-card:hover { transform: translateY(-5px); border-color: rgba(220,30,30,0.4); }
+    .val-icon { font-size: 34px; margin-bottom: 14px; }
+    .val-card h4 { font-size: 12px; font-weight: 700; letter-spacing: 3px; margin-bottom: 8px; text-transform: uppercase; }
+    .val-card p { font-size: 12px; color: rgba(255,255,255,0.38); line-height: 1.8; }
+
+    /* TEAM */
+    .team-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 16px; }
+    .tm {
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; padding: 2rem; text-align: center;
+      transition: transform 0.25s, border-color 0.25s;
+    }
+    .tm:hover { transform: translateY(-5px); border-color: rgba(220,30,30,0.35); }
+    .tm-avatar {
+      width: 68px; height: 68px; border-radius: 50%;
+      background: rgba(220,30,30,0.12); border: 2px solid rgba(220,30,30,0.3);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 30px; margin: 0 auto 14px;
+    }
+    .tm h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; letter-spacing: 1px; }
+    .tm p { font-size: 10px; color: #e53; letter-spacing: 2px; text-transform: uppercase; }
+
+    /* BANNER */
+    .cta-banner {
+      background: #111; border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 20px; padding: 3.5rem 2.5rem; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-banner::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 50% 0%, rgba(220,30,30,0.1), transparent 65%);
+      pointer-events: none;
+    }
+    .cta-banner h2 { font-size: 30px; font-weight: 700; margin-bottom: 12px; letter-spacing: 2px; }
+    .cta-banner p { font-size: 14px; color: rgba(255,255,255,0.4); max-width: 480px; margin: 0 auto 2rem; line-height: 1.8; }
+    .btn-main {
+      padding: 14px 36px; background: rgba(220,30,30,0.18); border: 1px solid rgba(220,30,30,0.65);
+      color: #fff; font-size: 11px; letter-spacing: 4px; text-transform: uppercase;
+      border-radius: 8px; text-decoration: none; backdrop-filter: blur(10px);
+      transition: all 0.25s; display: inline-block;
+    }
+    .btn-main:hover { background: rgba(220,30,30,0.35); transform: translateY(-2px); }
+
+    footer {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 2rem; background: #080808; border-top: 1px solid rgba(255,255,255,0.05);
+    }
+    footer p { font-size: 9px; color: rgba(255,255,255,0.18); letter-spacing: 3px; }
+
+    @media (max-width: 700px) {
+      .story-grid { grid-template-columns: 1fr; gap: 2rem; }
+      .section { padding: 3rem 1.5rem; }
+      .hero { padding: 6rem 1.5rem 3rem; }
+      nav { padding: 1rem 1.2rem; }
+      .nav-links { gap: 14px; }
+      footer { flex-direction: column; gap: 6px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">DS</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="shop.html">Shop</a>
+      <a href="about.html" class="active">About</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div style="width:28px"></div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-bg-photo"></div>
+    <div class="graffiti-tags">
+      <span class="tag" style="font-size:190px;top:-40px;left:-20px;color:#e00;transform:rotate(-8deg)">STORY</span>
+      <span class="tag" style="font-size:130px;top:0;right:-10px;color:#0af;transform:rotate(6deg)">ROOTS</span>
+      <span class="tag" style="font-size:100px;bottom:20px;left:4%;color:#fc0;transform:rotate(-5deg)">CULTURE</span>
+      <span class="tag" style="font-size:110px;bottom:10px;right:4%;color:#0c7;transform:rotate(5deg)">LEGACY</span>
+      <span class="tag" style="font-size:80px;top:42%;left:28%;color:#c0f;transform:rotate(-4deg)">ORIGIN</span>
+      <span class="tag" style="font-size:70px;top:22%;left:7%;color:#f60;transform:rotate(8deg)">BORN</span>
+      <span class="tag" style="font-size:65px;top:58%;right:18%;color:#e00;transform:rotate(-6deg)">REAL</span>
+      <span class="tag" style="font-size:60px;top:28%;right:22%;color:#fc0;transform:rotate(4deg)">STREET</span>
+    </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="page-tag">Dead Stock</span>
+      <h1>OUR STORY</h1>
+      <p>Born from the Streets &bull; Built for the Culture</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="inner">
+      <div class="story-grid">
+        <div class="story-img">
+          <img src="assets/about-photo.jpg" alt="Dead Stock Story"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span style="display:none;font-size:90px;width:100%;height:100%;align-items:center;justify-content:center;position:absolute;inset:0">♻️</span>
+        </div>
+        <div class="story-text">
+          <p class="s-label">The Beginning</p>
+          <h3>Where It All <span>Started</span></h3>
+          <p>Dead Stock was born out of a love for street culture, rare pieces, and the idea that fashion doesn't have to be fast. We started small — hunting thrift stores, flea markets and forgotten wardrobes for gems that deserved a second life.</p>
+          <p>What started as a passion became a movement. Every piece we carry has a story, a character, a soul. We don't do trends — we do timeless.</p>
+          <p>Based in Sholapur, Maharashtra, we're bringing the thrift culture to India — one rare find at a time.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section section-alt">
+    <div class="inner">
+      <p class="s-label" style="text-align:center">What We Stand For</p>
+      <h2 class="s-title" style="text-align:center">Our Values</h2>
+      <div class="vals">
+        <div class="val-card">
+          <div class="val-icon">♻️</div>
+          <h4>Sustainability</h4>
+          <p>Every piece we sell is a step away from fast fashion and toward a more conscious, sustainable future.</p>
+        </div>
+        <div class="val-card">
+          <div class="val-icon">🔥</div>
+          <h4>Authenticity</h4>
+          <p>No fakes, no mass produced drops. Every item is hand-selected and genuinely one of a kind.</p>
+        </div>
+        <div class="val-card">
+          <div class="val-icon">🏙️</div>
+          <h4>Street Culture</h4>
+          <p>Rooted in the streets, inspired by the ones who set the trends before the trends existed.</p>
+        </div>
+        <div class="val-card">
+          <div class="val-icon">💎</div>
+          <h4>Rare Finds</h4>
+          <p>We hunt so you don't have to. Vintage, deadstock, and limited pieces — all curated for you.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section">
+    <div class="inner">
+      <p class="s-label">The Crew</p>
+      <h2 class="s-title">Behind Dead Stock</h2>
+      <div class="team-grid">
+        <div class="tm">
+          <div class="tm-avatar">👤</div>
+          <h4>Founder</h4>
+          <p>Dead Stock</p>
+        </div>
+        <div class="tm">
+          <div class="tm-avatar">🎨</div>
+          <h4>Curator</h4>
+          <p>The Vault</p>
+        </div>
+        <div class="tm">
+          <div class="tm-avatar">📸</div>
+          <h4>Creative</h4>
+          <p>Visuals</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section section-alt">
+    <div class="inner">
+      <div class="cta-banner">
+        <h2>Ready to Find Your Piece?</h2>
+        <p>Head to the vault and discover rare thrifted finds, vintage streetwear and curated accessories waiting for you.</p>
+        <a href="shop.html" class="btn-main">Shop The Vault</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <footer>
+    <p>© 2026 DEAD STOCK</p>
+    <p>RARE FINDS. SECOND LIVES.</p>
+  </footer>
+
+</body>
+</html>
