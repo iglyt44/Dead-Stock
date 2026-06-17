@@ -6,239 +6,173 @@
   <title>Shop | DEAD STOCK</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      background: linear-gradient(135deg, #0a0a1a 0%, #1a0a2e 40%, #0a1a2e 70%, #0a0a1a 100%);
-      min-height: 100vh;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      color: #fff;
-      overflow-x: hidden;
-    }
-
-    .blob {
-      position: fixed;
-      border-radius: 50%;
-      filter: blur(100px);
-      opacity: 0.2;
-      pointer-events: none;
-      z-index: 0;
-    }
-    .b1 { width: 500px; height: 500px; background: #7f77dd; top: -150px; left: -150px; }
-    .b2 { width: 400px; height: 400px; background: #d4537e; top: 200px; right: -100px; }
-    .b3 { width: 350px; height: 350px; background: #1d9e75; bottom: 0; left: 30%; }
+    body { background: #0a0a0a; font-family: 'Segoe UI', system-ui, sans-serif; color: #fff; overflow-x: hidden; }
 
     nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
       padding: 1.2rem 2rem;
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-bottom: 0.5px solid rgba(255, 255, 255, 0.1);
-      position: sticky;
-      top: 0;
-      z-index: 100;
+      background: rgba(0,0,0,0.55); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(255,255,255,0.07);
     }
-
-    .nav-logo {
-      font-size: 18px;
-      font-weight: 600;
-      letter-spacing: 4px;
-      color: #fff;
-      text-decoration: none;
-    }
-
+    .nav-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; color: rgba(255,255,255,0.7); text-decoration: none; }
     .nav-links { display: flex; gap: 28px; }
-    .nav-links a {
-      color: rgba(255, 255, 255, 0.45);
-      text-decoration: none;
-      font-size: 11px;
-      letter-spacing: 2px;
-      transition: color 0.2s;
-    }
+    .nav-links a { color: rgba(255,255,255,0.5); text-decoration: none; font-size: 11px; letter-spacing: 3px; text-transform: uppercase; transition: color 0.2s; }
     .nav-links a:hover, .nav-links a.active { color: #fff; }
 
-    .page-wrap { position: relative; z-index: 1; padding: 2rem; }
-
-    .shop-header { margin-bottom: 1.5rem; }
-    .shop-header p { font-size: 10px; letter-spacing: 4px; color: rgba(255,255,255,0.35); margin-bottom: 6px; }
-    .shop-header h1 { font-size: 28px; font-weight: 500; letter-spacing: 1px; }
-
-    .filters {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 2rem;
+    .hero {
+      position: relative; min-height: 48vh;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      text-align: center; padding: 7rem 2rem 4rem; overflow: hidden;
     }
+    .hero-bg-photo {
+      position: absolute; inset: 0; z-index: 0;
+      background: url('assets/bg-graffiti.jpg') center/cover no-repeat;
+      background-color: #150f0f;
+    }
+    .hero-bg-photo::before {
+      content: ''; position: absolute; inset: 0;
+      background-image:
+        radial-gradient(ellipse 500px 350px at 0% 0%, rgba(200,20,20,0.32) 0%, transparent 65%),
+        radial-gradient(ellipse 400px 300px at 100% 0%, rgba(0,150,255,0.22) 0%, transparent 65%),
+        radial-gradient(ellipse 350px 280px at 50% 100%, rgba(180,0,220,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 280px 220px at 15% 85%, rgba(255,200,0,0.18) 0%, transparent 65%),
+        radial-gradient(ellipse 300px 250px at 80% 60%, rgba(0,210,110,0.15) 0%, transparent 65%);
+    }
+    .graffiti-tags { position: absolute; inset: 0; z-index: 1; overflow: hidden; pointer-events: none; }
+    .tag {
+      position: absolute; font-family: Impact, 'Arial Black', sans-serif;
+      font-weight: 900; font-style: italic; text-transform: uppercase;
+      line-height: 1; letter-spacing: -3px;
+      -webkit-text-stroke: 3px currentColor; color: transparent; opacity: 0.11;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 2;
+      background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, rgba(0,0,0,0.2) 50%, rgba(0,0,0,0.82) 100%);
+    }
+    .hero-content { position: relative; z-index: 5; text-align: center; }
+    .page-tag { font-size: 9px; letter-spacing: 6px; color: #e53; margin-bottom: 12px; display: block; text-transform: uppercase; }
+    .hero-content h1 {
+      font-size: clamp(44px, 9vw, 72px); font-weight: 900; letter-spacing: 4px; line-height: 1; margin-bottom: 12px;
+      font-family: Impact, 'Arial Black', sans-serif; font-style: italic;
+      -webkit-text-stroke: 2px rgba(255,255,255,0.22);
+    }
+    .hero-content p { font-size: 11px; color: rgba(255,255,255,0.4); letter-spacing: 4px; text-transform: uppercase; }
 
-    .filter-btn {
-      padding: 6px 18px;
-      border: 0.5px solid rgba(255, 255, 255, 0.2);
-      background: rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(10px);
-      -webkit-backdrop-filter: blur(10px);
-      color: rgba(255, 255, 255, 0.5);
-      font-size: 10px;
-      letter-spacing: 2px;
-      cursor: pointer;
-      border-radius: 20px;
-      transition: all 0.2s;
-    }
-    .filter-btn.active, .filter-btn:hover {
-      background: rgba(255, 255, 255, 0.15);
-      color: #fff;
-      border-color: rgba(255, 255, 255, 0.4);
-    }
+    .shop-wrap { padding: 3rem 2rem; max-width: 1200px; margin: 0 auto; }
 
-    .product-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-      gap: 20px;
+    .filters { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 2.5rem; align-items: center; }
+    .fl { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.28); margin-right: 6px; text-transform: uppercase; }
+    .filt {
+      padding: 7px 18px; background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px; font-size: 10px; letter-spacing: 2px; color: rgba(255,255,255,0.5);
+      cursor: pointer; transition: all 0.2s; text-transform: uppercase;
     }
+    .filt.active, .filt:hover { background: rgba(220,30,30,0.15); color: #fff; border-color: rgba(220,30,30,0.5); }
+
+    .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px; }
 
     .product-card {
-      background: rgba(255, 255, 255, 0.07);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border: 0.5px solid rgba(255, 255, 255, 0.15);
-      border-radius: 20px;
-      overflow: hidden;
-      transition: transform 0.25s ease, border-color 0.25s ease;
+      background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 18px; overflow: hidden;
+      transition: transform 0.25s, border-color 0.25s; cursor: pointer;
     }
-    .product-card:hover {
-      transform: translateY(-6px);
-      border-color: rgba(255, 255, 255, 0.3);
-    }
+    .product-card:hover { transform: translateY(-6px); border-color: rgba(220,30,30,0.45); }
 
     .product-img {
-      width: 100%;
-      aspect-ratio: 3 / 4;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: rgba(255, 255, 255, 0.03);
-      position: relative;
-      overflow: hidden;
+      width: 100%; aspect-ratio: 3/4;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 64px; background: #111; position: relative; overflow: hidden;
     }
-
-    .product-img img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
+    .product-img::before {
+      content: ''; position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 30% 30%, rgba(220,30,30,0.07), transparent 70%);
     }
-
-    .product-img .icon-placeholder {
-      font-size: 64px;
-      opacity: 0.7;
-    }
+    .product-img img { width: 100%; height: 100%; object-fit: cover; }
 
     .badge {
-      position: absolute;
-      top: 12px;
-      left: 12px;
-      font-size: 9px;
-      letter-spacing: 2px;
-      padding: 4px 10px;
-      border-radius: 6px;
-      font-weight: 500;
+      position: absolute; top: 12px; left: 12px;
+      font-size: 9px; letter-spacing: 2px; padding: 4px 10px; border-radius: 4px; font-weight: 600;
     }
-    .badge.new { background: rgba(127,119,221,0.35); color: #ccc9f7; border: 0.5px solid rgba(127,119,221,0.5); }
-    .badge.sold { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); border: 0.5px solid rgba(255,255,255,0.15); }
-    .badge.drop { background: rgba(212,83,126,0.35); color: #f4c0d1; border: 0.5px solid rgba(212,83,126,0.5); }
+    .badge.new { background: rgba(220,30,30,0.3); color: #fca; border: 1px solid rgba(220,30,30,0.55); }
+    .badge.sold { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); border: 1px solid rgba(255,255,255,0.15); }
+    .badge.drop { background: rgba(127,119,221,0.3); color: #ccc9f7; border: 1px solid rgba(127,119,221,0.5); }
 
     .product-info { padding: 14px 16px 16px; }
-
-    .product-category {
-      font-size: 9px;
-      letter-spacing: 3px;
-      color: rgba(255, 255, 255, 0.35);
-      margin-bottom: 4px;
-    }
-
-    .product-name {
-      font-size: 14px;
-      color: #fff;
-      font-weight: 400;
-      margin-bottom: 14px;
-      line-height: 1.4;
-    }
-
-    .product-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .product-price { font-size: 15px; font-weight: 500; color: #fff; }
-    .product-price.strikethrough { color: rgba(255,255,255,0.25); text-decoration: line-through; font-size: 13px; }
+    .product-cat { font-size: 9px; letter-spacing: 3px; color: rgba(255,255,255,0.28); margin-bottom: 4px; text-transform: uppercase; }
+    .product-name { font-size: 14px; font-weight: 500; margin-bottom: 14px; letter-spacing: 0.5px; }
+    .product-row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+    .product-price { font-size: 16px; font-weight: 700; color: #fff; }
+    .product-price.sold { color: rgba(255,255,255,0.25); text-decoration: line-through; font-size: 13px; }
 
     .add-btn {
-      background: rgba(255, 255, 255, 0.08);
-      border: 0.5px solid rgba(255, 255, 255, 0.2);
-      color: rgba(255, 255, 255, 0.7);
-      font-size: 9px;
-      letter-spacing: 1px;
-      padding: 7px 12px;
-      cursor: pointer;
-      border-radius: 10px;
-      backdrop-filter: blur(10px);
-      transition: all 0.2s;
-      white-space: nowrap;
+      background: rgba(220,30,30,0.12); border: 1px solid rgba(220,30,30,0.4);
+      color: rgba(255,255,255,0.8); font-size: 9px; letter-spacing: 1px; padding: 8px 12px;
+      cursor: pointer; border-radius: 7px; transition: all 0.2s; white-space: nowrap;
     }
-    .add-btn:hover { background: rgba(255,255,255,0.18); color: #fff; border-color: rgba(255,255,255,0.4); }
-    .add-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+    .add-btn:hover { background: rgba(220,30,30,0.3); color: #fff; border-color: #e53; }
+    .add-btn:disabled { opacity: 0.28; cursor: not-allowed; background: transparent; border-color: rgba(255,255,255,0.1); }
 
+    .divider { height: 1px; background: rgba(255,255,255,0.06); }
     footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.5rem 2rem;
-      border-top: 0.5px solid rgba(255, 255, 255, 0.08);
-      margin-top: 3rem;
-      position: relative;
-      z-index: 1;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.5rem 2rem; background: #080808; border-top: 1px solid rgba(255,255,255,0.05);
     }
-    footer p { font-size: 10px; color: rgba(255,255,255,0.2); letter-spacing: 2px; }
+    footer p { font-size: 9px; color: rgba(255,255,255,0.18); letter-spacing: 3px; }
 
     @media (max-width: 600px) {
-      nav { padding: 1rem; }
-      .nav-links { gap: 14px; }
-      .page-wrap { padding: 1.5rem 1rem; }
+      nav { padding: 1rem 1.2rem; } .nav-links { gap: 14px; }
+      .hero { padding: 6rem 1.5rem 3rem; }
+      .shop-wrap { padding: 2.5rem 1.2rem; }
       .product-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; }
+      footer { flex-direction: column; gap: 6px; text-align: center; }
     }
   </style>
 </head>
 <body>
 
-  <div class="blob b1"></div>
-  <div class="blob b2"></div>
-  <div class="blob b3"></div>
-
   <nav>
-    <a href="index.html" class="nav-logo">DEAD STOCK</a>
+    <a href="index.html" class="nav-logo">DS</a>
     <div class="nav-links">
-      <a href="index.html">HOME</a>
-      <a href="shop.html" class="active">SHOP</a>
-      <a href="about.html">ABOUT</a>
-      <a href="contact.html">CONTACT</a>
+      <a href="index.html">Home</a>
+      <a href="shop.html" class="active">Shop</a>
+      <a href="about.html">About</a>
+      <a href="contact.html">Contact</a>
     </div>
+    <div style="width:28px"></div>
   </nav>
 
-  <div class="page-wrap">
-    <div class="shop-header">
-      <p>THE VAULT</p>
-      <h1>All Drops</h1>
+  <div class="hero">
+    <div class="hero-bg-photo"></div>
+    <div class="graffiti-tags">
+      <span class="tag" style="font-size:190px;top:-40px;left:-20px;color:#e00;transform:rotate(-8deg)">VAULT</span>
+      <span class="tag" style="font-size:130px;top:0;right:-10px;color:#0af;transform:rotate(6deg)">DRIP</span>
+      <span class="tag" style="font-size:100px;bottom:20px;left:4%;color:#fc0;transform:rotate(-5deg)">FRESH</span>
+      <span class="tag" style="font-size:110px;bottom:10px;right:4%;color:#0c7;transform:rotate(5deg)">RARE</span>
+      <span class="tag" style="font-size:80px;top:42%;left:28%;color:#c0f;transform:rotate(-4deg)">STEEZ</span>
+      <span class="tag" style="font-size:70px;top:22%;left:7%;color:#f60;transform:rotate(8deg)">SHOP</span>
+      <span class="tag" style="font-size:65px;top:60%;right:18%;color:#e00;transform:rotate(-6deg)">THRIFT</span>
+      <span class="tag" style="font-size:60px;top:28%;right:24%;color:#fc0;transform:rotate(4deg)">DEAD</span>
     </div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <span class="page-tag">Dead Stock</span>
+      <h1>THE VAULT</h1>
+      <p>All Drops &bull; All Categories &bull; All Rare</p>
+    </div>
+  </div>
 
+  <div class="divider"></div>
+
+  <div class="shop-wrap">
     <div class="filters">
-      <button class="filter-btn active" data-filter="all">ALL</button>
-      <button class="filter-btn" data-filter="clothing">CLOTHING</button>
-      <button class="filter-btn" data-filter="watches">WATCHES</button>
-      <button class="filter-btn" data-filter="rings">RINGS</button>
-      <button class="filter-btn" data-filter="belts">BELTS</button>
+      <span class="fl">FILTER:</span>
+      <button class="filt active" data-filter="all">ALL</button>
+      <button class="filt" data-filter="clothing">CLOTHING</button>
+      <button class="filt" data-filter="watches">WATCHES</button>
+      <button class="filt" data-filter="rings">RINGS</button>
+      <button class="filt" data-filter="belts">BELTS</button>
+      <button class="filt" data-filter="accessories">ACCESSORIES</button>
     </div>
 
     <div class="product-grid" id="productGrid">
@@ -246,13 +180,14 @@
       <div class="product-card" data-category="clothing">
         <div class="product-img">
           <span class="badge new">NEW</span>
-          <img src="assets/products/jacket.jpg" alt="Vintage Denim Jacket" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <span class="icon-placeholder" style="display:none">🧥</span>
+          <img src="assets/products/jacket.jpg" alt="Vintage Denim Jacket"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span style="display:none;font-size:64px;width:100%;height:100%;align-items:center;justify-content:center;position:absolute">🧥</span>
         </div>
         <div class="product-info">
-          <p class="product-category">CLOTHING</p>
+          <p class="product-cat">Clothing</p>
           <p class="product-name">Vintage Denim Jacket</p>
-          <div class="product-bottom">
+          <div class="product-row">
             <span class="product-price">₹999</span>
             <button class="add-btn">ADD TO CART</button>
           </div>
@@ -261,13 +196,14 @@
 
       <div class="product-card" data-category="watches">
         <div class="product-img">
-          <img src="assets/products/watch.jpg" alt="Retro Watch" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <span class="icon-placeholder" style="display:none">⌚</span>
+          <img src="assets/products/watch.jpg" alt="Retro Watch"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span style="display:none;font-size:64px;width:100%;height:100%;align-items:center;justify-content:center;position:absolute">⌚</span>
         </div>
         <div class="product-info">
-          <p class="product-category">WATCHES</p>
+          <p class="product-cat">Watches</p>
           <p class="product-name">Retro Watch</p>
-          <div class="product-bottom">
+          <div class="product-row">
             <span class="product-price">₹799</span>
             <button class="add-btn">ADD TO CART</button>
           </div>
@@ -277,13 +213,14 @@
       <div class="product-card" data-category="clothing">
         <div class="product-img">
           <span class="badge new">NEW</span>
-          <img src="assets/products/streetwear.jpg" alt="Streetwear Hoodie" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-          <span class="icon-placeholder" style="display:none">👕</span>
+          <img src="assets/products/streetwear.jpg" alt="Streetwear Hoodie"
+               onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+          <span style="display:none;font-size:64px;width:100%;height:100%;align-items:center;justify-content:center;position:absolute">👕</span>
         </div>
         <div class="product-info">
-          <p class="product-category">CLOTHING</p>
+          <p class="product-cat">Clothing</p>
           <p class="product-name">Streetwear Hoodie</p>
-          <div class="product-bottom">
+          <div class="product-row">
             <span class="product-price">₹1,499</span>
             <button class="add-btn">ADD TO CART</button>
           </div>
@@ -293,13 +230,13 @@
       <div class="product-card" data-category="rings">
         <div class="product-img">
           <span class="badge sold">SOLD</span>
-          <span class="icon-placeholder">💍</span>
+          <span style="font-size:64px">💍</span>
         </div>
         <div class="product-info">
-          <p class="product-category">RINGS</p>
+          <p class="product-cat">Rings</p>
           <p class="product-name">Silver Band Ring</p>
-          <div class="product-bottom">
-            <span class="product-price strikethrough">₹499</span>
+          <div class="product-row">
+            <span class="product-price sold">₹499</span>
             <button class="add-btn" disabled>SOLD OUT</button>
           </div>
         </div>
@@ -307,13 +244,28 @@
 
       <div class="product-card" data-category="belts">
         <div class="product-img">
-          <span class="icon-placeholder">🥋</span>
+          <span style="font-size:64px">🥋</span>
         </div>
         <div class="product-info">
-          <p class="product-category">BELTS</p>
+          <p class="product-cat">Belts</p>
           <p class="product-name">Leather Tactical Belt</p>
-          <div class="product-bottom">
+          <div class="product-row">
             <span class="product-price">₹649</span>
+            <button class="add-btn">ADD TO CART</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="accessories">
+        <div class="product-img">
+          <span class="badge drop">DROP 001</span>
+          <span style="font-size:64px">🧣</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Accessories</p>
+          <p class="product-name">Vintage Scarf</p>
+          <div class="product-row">
+            <span class="product-price">₹399</span>
             <button class="add-btn">ADD TO CART</button>
           </div>
         </div>
@@ -322,13 +274,28 @@
       <div class="product-card" data-category="clothing">
         <div class="product-img">
           <span class="badge drop">DROP 001</span>
-          <span class="icon-placeholder">🧣</span>
+          <span style="font-size:64px">🧤</span>
         </div>
         <div class="product-info">
-          <p class="product-category">ACCESSORIES</p>
-          <p class="product-name">Vintage Scarf</p>
-          <div class="product-bottom">
-            <span class="product-price">₹399</span>
+          <p class="product-cat">Clothing</p>
+          <p class="product-name">Vintage Gloves</p>
+          <div class="product-row">
+            <span class="product-price">₹349</span>
+            <button class="add-btn">ADD TO CART</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-card" data-category="watches">
+        <div class="product-img">
+          <span class="badge new">NEW</span>
+          <span style="font-size:64px">🕰️</span>
+        </div>
+        <div class="product-info">
+          <p class="product-cat">Watches</p>
+          <p class="product-name">Vintage Pocket Watch</p>
+          <div class="product-row">
+            <span class="product-price">₹1,199</span>
             <button class="add-btn">ADD TO CART</button>
           </div>
         </div>
@@ -337,15 +304,17 @@
     </div>
   </div>
 
+  <div class="divider"></div>
+
   <footer>
     <p>© 2026 DEAD STOCK</p>
     <p>RARE FINDS. SECOND LIVES.</p>
   </footer>
 
   <script>
-    document.querySelectorAll('.filter-btn').forEach(btn => {
+    document.querySelectorAll('.filt').forEach(btn => {
       btn.addEventListener('click', () => {
-        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('.filt').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
         const filter = btn.dataset.filter;
         document.querySelectorAll('.product-card').forEach(card => {
@@ -353,7 +322,21 @@
         });
       });
     });
+
+    document.querySelectorAll('.add-btn:not(:disabled)').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const orig = btn.textContent;
+        btn.textContent = 'ADDED ✓';
+        btn.style.background = 'rgba(0,180,80,0.2)';
+        btn.style.borderColor = 'rgba(0,180,80,0.5)';
+        setTimeout(() => {
+          btn.textContent = orig;
+          btn.style.background = '';
+          btn.style.borderColor = '';
+        }, 1500);
+      });
+    });
   </script>
+
 </body>
 </html>
- 
