@@ -6,38 +6,153 @@
   <title>ADMIN | DEAD STOCK</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: #0a0a0a; font-family: 'Segoe UI', sans-serif; color: #fff; }
-    /* ... (keep previous styles) ... */
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+    }
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1rem 2rem;
+      background: rgba(0,0,0,0.9);
+      border-bottom: 1px solid #e53;
+    }
+    .nav-logo { font-size: 14px; font-weight: 700; letter-spacing: 4px; color: #e53; }
+
+    .container { max-width: 1200px; margin: 90px auto; padding: 2rem; }
+    .header { text-align: center; margin-bottom: 2rem; }
+    .header h1 { color: #e53; letter-spacing: 4px; }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1rem;
+      background: #111;
+      padding: 2rem;
+      border-radius: 12px;
+      border: 1px solid rgba(229,51,51,0.3);
+      margin-bottom: 2rem;
+    }
+    input, select, textarea, button {
+      padding: 12px;
+      background: #1a1a1a;
+      border: 1px solid #444;
+      color: #fff;
+      border-radius: 6px;
+    }
     textarea { min-height: 100px; resize: vertical; }
+    button {
+      background: #e53;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      letter-spacing: 2px;
+    }
+    button:hover { background: #ff6666; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: #111;
+      border-radius: 12px;
+      overflow: hidden;
+    }
+    th, td {
+      padding: 12px;
+      text-align: left;
+      border-bottom: 1px solid #333;
+    }
+    th { background: #1a1a1a; color: #e53; }
+    .delete-btn {
+      background: #900;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .thumb { width: 50px; height: 50px; object-fit: cover; border-radius: 4px; }
   </style>
 </head>
 <body>
-  <!-- ... previous nav and container ... -->
 
-  <div class="form-grid">
-    <input type="text" id="name" placeholder="Product Name" />
-    <input type="number" id="price" placeholder="Price (₹)" />
-    <select id="category"> ... same as before ... </select>
-    
-    <div>
-      <button onclick="document.getElementById('fileInput').click()">📸 Choose Image</button>
-      <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(event)">
-      <img id="imagePreview" style="width:120px;height:120px;object-fit:cover;border-radius:8px;display:none;">
+  <nav>
+    <a href="index.html" class="nav-logo">DEAD STOCK ADMIN</a>
+    <a href="shop.html" style="color:#aaa; text-decoration:none;">← Back to Shop</a>
+  </nav>
+
+  <div class="container">
+    <div class="header">
+      <h1>PRODUCT ADMIN PANEL</h1>
     </div>
 
-    <input type="text" id="badge" placeholder="Badge (NEW, SOLD...)" />
-    <select id="status"> ... same ... </select>
-    
-    <!-- New Field -->
-    <textarea id="description" placeholder="Product Description (size, material, story etc.)"></textarea>
-    
-    <button onclick="addProduct()">ADD / UPDATE PRODUCT</button>
+    <div class="form-grid">
+      <input type="text" id="name" placeholder="Product Name" />
+      <input type="number" id="price" placeholder="Price (₹)" />
+      <select id="category">
+        <option value="clothing">Clothing</option>
+        <option value="watch">Watches</option>
+        <option value="ring">Rings</option>
+        <option value="belt">Belts</option>
+        <option value="accessory">Accessories</option>
+      </select>
+      
+      <div>
+        <button onclick="document.getElementById('fileInput').click()">📸 Choose Image</button>
+        <input type="file" id="fileInput" accept="image/*" style="display:none" onchange="previewImage(event)">
+        <img id="imagePreview" style="width:120px;height:120px;object-fit:cover;border-radius:8px;display:none;margin-top:8px;">
+      </div>
+
+      <input type="text" id="badge" placeholder="Badge (NEW, SOLD...)" />
+      <select id="status">
+        <option value="active">Listed (Active)</option>
+        <option value="inactive">Delisted (Inactive)</option>
+      </select>
+      
+      <textarea id="description" placeholder="Product Description (material, size, story etc.)"></textarea>
+      
+      <button onclick="addProduct()">ADD / UPDATE PRODUCT</button>
+    </div>
+
+    <button onclick="exportProducts()" style="margin:10px 0;padding:12px 24px;background:#333;color:white;border:none;">EXPORT PRODUCTS (Copy JSON)</button>
+
+    <h2 style="margin:2rem 0 1rem;">Current Products</h2>
+    <table id="productTable">
+      <thead>
+        <tr>
+          <th>Image</th>
+          <th>Name</th>
+          <th>Price</th>
+          <th>Category</th>
+          <th>Status</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"></tbody>
+    </table>
   </div>
 
-  <!-- Rest of the table and script stays similar, but update addProduct and renderTable -->
-
   <script>
-    // ... previous code ...
+    const ADMIN_PASSWORD = "deadstock2026";
+
+    let products = JSON.parse(localStorage.getItem('deadstock_products')) || [];
+
+    function saveProducts() {
+      localStorage.setItem('deadstock_products', JSON.stringify(products));
+    }
+
+    function previewImage(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(ev) {
+        const preview = document.getElementById('imagePreview');
+        preview.src = ev.target.result;
+        preview.style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
 
     window.addProduct = function() {
       const name = document.getElementById('name').value.trim();
@@ -45,27 +160,90 @@
       const category = document.getElementById('category').value;
       const badge = document.getElementById('badge').value.trim();
       const status = document.getElementById('status').value;
-      const imageData = document.getElementById('imagePreview').src || '';
       const description = document.getElementById('description').value.trim();
+      const imageData = document.getElementById('imagePreview').src || '';
 
-      if (!name || !price) { alert("Name and Price required!"); return; }
+      if (!name || !price) {
+        alert("Name and Price are required!");
+        return;
+      }
 
       const existingIndex = products.findIndex(p => p.name.toLowerCase() === name.toLowerCase());
 
       if (existingIndex !== -1) {
-        products[existingIndex] = { ...products[existingIndex], price, category, imageData, badge, status, description };
+        products[existingIndex] = { ...products[existingIndex], price, category, badge, status, description, imageData };
         alert("✅ Product Updated!");
       } else {
-        products.push({ id: Date.now(), name, price, category, imageData, badge, status, description: description || "Rare vintage piece. Curated with care." });
+        products.push({
+          id: Date.now(),
+          name,
+          price,
+          category,
+          badge,
+          status,
+          description: description || "Rare curated thrift piece.",
+          imageData
+        });
         alert("✅ Product Added!");
       }
 
       saveProducts();
       renderTable();
-      // clear form...
+      clearForm();
     };
 
-    // Update renderTable to show description preview if you want
+    function clearForm() {
+      document.getElementById('name').value = '';
+      document.getElementById('price').value = '';
+      document.getElementById('badge').value = '';
+      document.getElementById('description').value = '';
+      document.getElementById('imagePreview').style.display = 'none';
+      document.getElementById('fileInput').value = '';
+    }
+
+    function renderTable() {
+      const tbody = document.getElementById('tableBody');
+      tbody.innerHTML = '';
+      products.forEach((p, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${p.imageData ? `<img class="thumb" src="${p.imageData}">` : 'No Image'}</td>
+          <td>${p.name}</td>
+          <td>₹${p.price}</td>
+          <td>${p.category}</td>
+          <td style="color:${p.status === 'active' ? '#0f0' : '#f66'}">${p.status.toUpperCase()}</td>
+          <td><button class="delete-btn" onclick="deleteProduct(${index})">Delete</button></td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    window.deleteProduct = function(index) {
+      if (confirm("Delete this product?")) {
+        products.splice(index, 1);
+        saveProducts();
+        renderTable();
+      }
+    };
+
+    window.exportProducts = function() {
+      const data = JSON.stringify(products, null, 2);
+      navigator.clipboard.writeText(data).then(() => {
+        alert("✅ JSON copied! Paste it here if you want me to check.");
+      });
+    };
+
+    function checkPassword() {
+      const pass = prompt("Enter Admin Password:");
+      if (pass !== ADMIN_PASSWORD) {
+        alert("❌ Wrong Password");
+        window.location.href = "index.html";
+      } else {
+        renderTable();
+      }
+    }
+
+    window.onload = checkPassword;
   </script>
 </body>
 </html>
