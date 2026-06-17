@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SIGN UP | DEAD STOCK</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .signup-container {
+      background: #111;
+      border: 1px solid #e53;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      letter-spacing: 6px;
+      color: #e53;
+      margin-bottom: 30px;
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+    p {
+      color: #888;
+      margin-bottom: 30px;
+    }
+    .google-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      width: 100%;
+      padding: 14px;
+      background: #fff;
+      color: #000;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      margin-bottom: 20px;
+      transition: 0.2s;
+    }
+    .google-btn:hover {
+      background: #f0f0f0;
+      transform: translateY(-2px);
+    }
+    .divider {
+      margin: 25px 0;
+      color: #555;
+      position: relative;
+    }
+    .divider::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: #333;
+    }
+    .divider span {
+      background: #111;
+      padding: 0 15px;
+    }
+    input {
+      width: 100%;
+      padding: 14px;
+      background: #1a1a1a;
+      border: 1px solid #444;
+      color: #fff;
+      border-radius: 6px;
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #e53;
+      color: #000;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+    .btn:hover {
+      background: #ff6666;
+    }
+    .login-link {
+      margin-top: 25px;
+      color: #888;
+    }
+    .login-link a {
+      color: #e53;
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="signup-container">
+    <div class="logo">DEAD STOCK</div>
+    <h1>Join The Vault</h1>
+    <p>Create an account to save your favorites and get early drops</p>
+
+    <!-- Google Sign Up -->
+    <button onclick="googleSignUp()" class="google-btn">
+      <span style="font-size:20px;">G</span>
+      Continue with Google
+    </button>
+
+    <div class="divider"><span>OR</span></div>
+
+    <!-- Email Signup -->
+    <input type="text" id="name" placeholder="Full Name" />
+    <input type="email" id="email" placeholder="Email Address" />
+    <input type="password" id="password" placeholder="Password" />
+
+    <button onclick="signUp()" class="btn">CREATE ACCOUNT</button>
+
+    <div class="login-link">
+      Already have an account? <a href="login.html">Sign In</a>
+    </div>
+  </div>
+
+  <script>
+    function googleSignUp() {
+      alert("🔥 Google Sign Up\n\n( Demo Mode )\n\nIn real version this would connect to Google.\n\nWelcome to Dead Stock!");
+      // You can redirect to shop after real implementation
+      setTimeout(() => {
+        window.location.href = "shop.html";
+      }, 1500);
+    }
+
+    function signUp() {
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      
+      if (name && email) {
+        alert(`✅ Account Created Successfully!\n\nWelcome, ${name}!\n\nYou can now save items and checkout.`);
+        setTimeout(() => {
+          window.location.href = "shop.html";
+        }, 1200);
+      } else {
+        alert("Please fill all fields");
+      }
+    }
+
+    // Allow pressing Enter to submit
+    document.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') signUp();
+    });
+  </script>
+</body>
+</html>
