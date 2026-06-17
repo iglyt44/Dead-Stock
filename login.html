@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LOGIN | DEAD STOCK</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #0a0a0a;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .login-container {
+      background: #111;
+      border: 1px solid #e53;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px 30px;
+      text-align: center;
+    }
+    .logo { font-size: 28px; font-weight: 900; letter-spacing: 6px; color: #e53; margin-bottom: 30px; }
+    h1 { font-size: 24px; margin-bottom: 8px; }
+    p { color: #888; margin-bottom: 30px; }
+
+    .google-btn {
+      display: flex; align-items: center; justify-content: center; gap: 12px;
+      width: 100%; padding: 14px; background: #fff; color: #000;
+      border: none; border-radius: 8px; font-size: 15px; font-weight: 600;
+      cursor: pointer; margin-bottom: 20px;
+    }
+    .google-btn:hover { background: #f0f0f0; }
+
+    input {
+      width: 100%; padding: 14px; background: #1a1a1a; border: 1px solid #444;
+      color: #fff; border-radius: 6px; margin-bottom: 12px; font-size: 15px;
+    }
+    .btn {
+      width: 100%; padding: 14px; background: #e53; color: #000;
+      border: none; border-radius: 6px; font-size: 15px; font-weight: bold;
+      cursor: pointer; margin-top: 10px;
+    }
+    .forgot { color: #e53; text-decoration: none; font-size: 13px; margin: 15px 0; display: block; }
+    .signup-link { margin-top: 25px; color: #888; }
+    .signup-link a { color: #e53; text-decoration: none; }
+  </style>
+</head>
+<body>
+
+  <div class="login-container">
+    <div class="logo">DEAD STOCK</div>
+    <h1>Welcome Back</h1>
+    <p>Sign in to access your vault</p>
+
+    <button onclick="googleLogin()" class="google-btn">
+      <span style="font-size:20px;">G</span> Continue with Google
+    </button>
+
+    <div style="margin:20px 0;color:#555;">OR</div>
+
+    <input type="email" id="email" placeholder="Email Address" />
+    <input type="password" id="password" placeholder="Password" />
+
+    <a href="#" onclick="forgotPassword()" class="forgot">Forgot Password?</a>
+
+    <button onclick="login()" class="btn">SIGN IN</button>
+
+    <div class="signup-link">
+      Don't have an account? <a href="signup.html">Sign Up</a>
+    </div>
+  </div>
+
+  <script>
+    function googleLogin() {
+      alert("🔥 Google Login Successful (Demo)\n\nWelcome back to Dead Stock!");
+      setTimeout(() => window.location.href = "shop.html", 1200);
+    }
+
+    function login() {
+      const email = document.getElementById('email').value.trim();
+      if (email) {
+        alert(`✅ Login Successful!\n\nWelcome back!`);
+        setTimeout(() => window.location.href = "shop.html", 1000);
+      } else {
+        alert("Please enter your email");
+      }
+    }
+
+    function forgotPassword() {
+      const email = prompt("Enter your email address:");
+      if (email) {
+        alert(`✅ Password reset link sent to ${email}\n\n(Check your inbox - Demo)`);
+      }
+    }
+  </script>
+</body>
+</html>
