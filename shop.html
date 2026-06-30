@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -475,7 +476,7 @@
         <span>Total</span>
         <span id="cart-total">₹0</span>
       </div>
-      <button class="checkout-btn">CHECKOUT →</button>
+      <button class="checkout-btn" onclick="checkoutWhatsApp()">CHECKOUT →</button>
     </div>
   </div>
 
@@ -532,6 +533,32 @@
         card.style.display = (cat === 'all' || card.dataset.category === cat) ? '' : 'none';
       });
     }
+
+    function checkoutWhatsApp() {
+
+      if (cart.length === 0) {
+        alert("Your bag is empty.");
+        return;
+      }
+
+      let message = "Hi DEAD STOCK,%0A%0AI want to order:%0A%0A";
+      let total = 0;
+
+      cart.forEach(item => {
+        message += "• " + item.name + " - ₹" + item.price + "%0A";
+        total += item.price;
+      });
+
+      message += "%0A------------------------";
+      message += "%0ATotal: ₹" + total;
+      message += "%0A%0AName: __________";
+      message += "%0APhone: __________";
+      message += "%0AAddress: __________";
+      message += "%0A%0APlease confirm my order.";
+
+      window.open("https://wa.me/919284831380?text=" + message, "_blank");
+    }
+
   </script>
 
 </body>
